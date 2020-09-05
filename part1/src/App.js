@@ -1,14 +1,17 @@
 import React from 'react';
 
-const Hello = (props) => {
+const Hello = ({ name, age }) => {  
+  const bornYear = () => new Date().getFullYear() - age
+  
   return (
-    <div className="App">
-        HEEEEEEEEEEEEEEEEELLO {props.name} you are {props.age} years old<br />
+    <div>
+      <p>
+        Hello {name}, you are {age} years old
+      </p>
+      <p>So you were probably born in {bornYear()}</p>
     </div>
-  );
-
+  )
 }
-
 
 function App() {
   return (
