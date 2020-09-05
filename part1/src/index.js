@@ -3,27 +3,31 @@ import ReactDOM from 'react-dom';
 
 
 
-const App = () => {
-  const [counter, setCounter ] = useState(0)
+const App = (props) => {
+  const [clicks, setClicks] = useState({
+    left:0,right:0
+  })
 
-  //setTimeout(
-  //  ()=>setCounter(counter+1),1000
-  //)
+  const handleLeftClick = () => {
+    const newClicks = {
+      ...clicks,
+      left: clicks.left + 1
+    }
 
-
-  const increseaByOne = () => setCounter(counter+1)
-  const setToZero = () => setCounter(0)
-
-  const handleClick = () => {
-    console.log("clicked")
+    setClicks(newClicks)
+  }
+  const handleRightClick = () => {
+    setClicks({...clicks,right: clicks.right + 1})
   }
 
   return (
     <div>
-      {counter}
-      
-      <button onClick={increseaByOne}>+</button><br />
-      <button onClick={setToZero}>reset</button>
+      <div>
+        {clicks.left}
+        <button onClick={handleLeftClick}>left</button>
+        <button onClick={handleRightClick}>right</button>
+        {clicks.right}
+      </div>
     </div>
   );
 }
