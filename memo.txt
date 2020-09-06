@@ -1,0 +1,1 @@
+Changing state has to always be done by setting the state to a new object.
