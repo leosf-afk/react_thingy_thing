@@ -1,1 +1,6 @@
-Changing state has to always be done by setting the state to a new object.
+-Changing state has to always be done by setting the state to a new object.
+-The useState function (as well as the useEffect function introduced later on in the course) must not be called from inside of a loop, a conditional expression, or any place that is not a function defining a component. This must be done to ensure that the hooks are always called in the same order, and if this isn't the case the application will behave erratically.
+-Do Not Define Components Within Components
+-setNotes(notes.concat(noteObject))
+The method does not mutate the original notes array, but rather creates a new copy of the array with the new item added to the end. This is important since we must never mutate state directly in React!
+-
