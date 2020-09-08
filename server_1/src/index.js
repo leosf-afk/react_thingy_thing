@@ -19,49 +19,6 @@ const Filter = (props) => {
   )
 }
 
-//export default class Weather extends React.Component {
-//  
-//  constructor(props) {
-//    super(props);
-//    const {city} = props
-//    const [weatherData,setWeatherData] = useState({})
-//    //var weatherData = {}
-//    const api_u = "http://api.weatherstack.com/current?access_key=" + API_KEY.trim() + "&query=" + city
-//  
-//  }
-//
-//  componentDidMount() {
-//  
-//    axios.get(this.api_u)
-//    .then(response => {
-//      lg("PROMIES WEATHER","promise fullfiled")
-//      console.log(response.data)
-//      this.weatherData = response.data
-//    }).catch(err => {
-//     console.log(err)
-//    })
-//  }
-//
-//  render() {
-//    console.log("RENDER", this.weatherData)
-//    if(this.weatherData){
-//      return (
-//        <div>
-//          <h1>Weather in {this.props.city}</h1>
-//          {this.weatherData.current.temperature}
-//        </div>
-//      )
-//    } else {
-//      return (
-//        <div>
-//          <h1>Weather in {this.props.city}</h1>
-//          error getting weather data
-//        </div>
-//      )
-//    }
-//  }
-//}
-
 const Weather = (props) => {
   const {city} = props
   const [weatherData,setWeatherData] = useState({current:{temperature:""}})
