@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './components/filter'
 import PersonForm from './components/personform'
 import Persons from './components/persons'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -12,12 +13,8 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
   
   useEffect(() => {
-    console.log('effect')
-    axios.get('http://localhost:3001/persons')
-    .then(response => {
-      console.log("promise fulfilled")
-      setPersons(response.data)
-    })
+    console.log("effect")
+    personService.getAll().then(p => {setPersons(p)})
   }, [])
 
   const addPerson = (event) =>{
@@ -25,14 +22,38 @@ const App = () => {
 
     let person_in_list = persons.map(x=>x.name).includes(newName)
     if(person_in_list){
-      alert(`${newName} already in phonebook`)
+      
+
+      if (window.confirm(`${newName} already in phonebook, do you want to replace ${newName} number?`)) {
+        const new_person = {
+          name: newName,
+          number: newNumber
+        }
+
+        const person_id = persons.filter(p => p.name===newName)[0].id
+        personService.update(person_id, new_person)
+        .then(
+          p => {
+            alert("updated succesfuly")
+            setNewName('')
+            setNewNumber('')
+            setPersons(persons)
+          })
+      }
     } else {
       const new_person = {
         name: newName,
         number: newNumber
       }
   
-      setPersons(persons.concat(new_person))
+      //setPersons(persons.concat(new_person))
+      personService.create(new_person).then(
+        p => {
+          setPersons(persons.concat(p))
+          setNewName('')
+          setNewNumber('')
+        }
+      )
     }
     
   }
