@@ -3,7 +3,10 @@ import axios from 'axios'
 import Filter from './components/filter'
 import PersonForm from './components/personform'
 import Persons from './components/persons'
+import Notification from './components/notification'
 import personService from './services/persons'
+import './message.css'
+
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -11,10 +14,16 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterValue, setFilterValue ] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('Some error happen...')
+  const [success, setSuccess] = useState(false)
   
   useEffect(() => {
     console.log("effect")
-    personService.getAll().then(p => {setPersons(p)})
+    personService.getAll().then(p => {setPersons(p)}).catch(error=>{
+      console.log("ERROR")
+      setErrorMessage(`ERROR loading persons `)
+      setTimeout(()=>{setErrorMessage(null)},5000)
+    })
   }, [])
 
   const addPerson = (event) =>{
@@ -32,13 +41,20 @@ const App = () => {
 
         const person_id = persons.filter(p => p.name===newName)[0].id
         personService.update(person_id, new_person)
-        .then(
-          p => {
+        .then(p => {
             alert("updated succesfuly")
             setNewName('')
             setNewNumber('')
-            setPersons(persons)
-          })
+            setPersons(persons)})
+        .catch(error=>{
+          console.log("ERROR")
+          setErrorMessage(`ERROR adding ${new_person.name}`)
+          setSuccess(false)
+          setPersons(persons)
+          setTimeout(()=>{setErrorMessage(null)},5000)
+          
+        })
+
       }
     } else {
       const new_person = {
@@ -49,11 +65,19 @@ const App = () => {
       //setPersons(persons.concat(new_person))
       personService.create(new_person).then(
         p => {
+          setErrorMessage(`Added ${new_person.name}`)
+          setSuccess(true)
+          setTimeout(()=>{setErrorMessage(null)},5000)
           setPersons(persons.concat(p))
           setNewName('')
           setNewNumber('')
         }
-      )
+      ).catch(error=>{
+        console.log("ERROR")
+        setErrorMessage(`ERROR editing ${new_person.name}`)
+        setSuccess(false)
+        setTimeout(()=>{setErrorMessage(null)},5000)
+      })
     }
     
   }
@@ -85,6 +109,7 @@ const App = () => {
       debug number: {newNumber}<br />
       
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} success={success}/>
       <Filter handleFilterChange={handleFilterChange} filterValue={filterValue} />
       <br />
       
