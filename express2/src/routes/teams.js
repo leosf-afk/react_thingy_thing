@@ -3,9 +3,10 @@ const router = express.Router();
 
 const {
     getTeams,
-    addTeams
+    addTeam
 } = require("../controllers/team");
 
-router.route("/teams").get(getTeams);
+router.route("/").get(getTeams);
+router.route("/add").post(addTeam);
 
 module.exports = router;

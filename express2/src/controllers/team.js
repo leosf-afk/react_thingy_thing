@@ -23,7 +23,18 @@ exports.getTeams = asyncHandler(async (req, res, next) => {
 //exports.editTeam = await asyncHandler(User.findByPk())
 
 exports.addTeam = asyncHandler(async (req,res,next) => {
-    const team = await Team.create(req.body)
+    console.log(req.body)
+    console.log(req.params)
+    
+    if(!req.body){
+        return next({
+            message: "Error: no body",
+            statusCode: 404,
+          });
+    }
+    const team = await Team.create({
+        name: req.body.name
+    })
 
     await team.save()
 
