@@ -26,7 +26,7 @@ const ViewMatches = ({isFetching, getMatches}) => {
 
 const mapStateToProps = ({ matches }) => ({
     isFetching: matches.isFetching,
-    matches: matches.videos,
+    matches: matches.matches,
 });
 
 export default connect(mapStateToProps, { getMatches })(ViewMatches);

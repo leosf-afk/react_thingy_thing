@@ -1,11 +1,11 @@
-import {GET_MATCHES,ADD_MATCH} from "./types";
+import {GET_MATCHES,ADD_MATCHES} from "./types";
 import api from "../services/api";
 
 export const addMatch = ({ equipos }) => async (dispatch) => {
     const res = await api.post('matches/add', { equipos });
 
     dispatch({
-        type: ADD_MATCH,
+        type: ADD_MATCHES,
         payload: res.data.data,
     });
 };
