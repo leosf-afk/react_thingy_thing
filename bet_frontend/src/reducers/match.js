@@ -5,7 +5,7 @@ const initialState = {
     matches: [],
 }
 
-const match = ({state=initialState, action}) => {
+const match = (state=initialState, action) => {
     switch(action.type){
         case GET_MATCHES:
             return action.payload;

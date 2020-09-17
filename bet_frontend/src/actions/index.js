@@ -11,13 +11,14 @@ export const addMatch = ({ equipos }) => async (dispatch) => {
 };
 
 export const getMatches = () => async (dispatch) => {
-    const res = await api.get("matches");
-  
+    const res = await api.get("/matches");
+    console.log(res)
+    
     dispatch({
       type: GET_MATCHES,
       payload: {
         isFetching: false,
-        videos: res.data.data,
+        matches: res.data,
       },
     });
   };

@@ -1,0 +1,153 @@
+{
+  "matches": [
+    {
+        "id": 1,
+        "Equipo1": "Boca",
+        "Equipo2": "River",
+        "CotizacionId": 3
+    },
+    {
+        "id": 2,
+        "Equipo1": "Independiente",
+        "Equipo2": "Racing",
+        "CotizacionId": 1
+    },
+    {
+        "id": 3,
+        "Equipo1": "Newells",
+        "Equipo2": "Banfield",
+        "CotizacionId": 2
+    }
+  ],
+  "Cotizaciones": [
+      {
+        "id": 1,
+        "PartidoId": 3,
+        "Uno": 2.33,
+        "X": 3.33,
+        "Dos": 4.32
+      },
+      {
+        "id": 2,
+        "PartidoId": 2,
+        "Uno": 1.44,
+        "X": 2.1,
+        "Dos": 5.32
+      },
+      {
+        "id": 3,
+        "PartidoId": 1,
+        "Uno": 2.56,
+        "X": 3.33,
+        "Dos": 2.62
+      }
+  ],
+  "Persona": [
+    {
+        "id": 1,
+        "Nombre": "Pedro Flores",
+        "DNI": "34592123"
+    },
+    {
+        "id": 2,
+        "Nombre": "Juan Rosales",
+        "DNI": "35032321"
+    },
+    {
+        "id": 3,
+        "Nombre": "Nesto Fernandez",
+        "DNI": "40293212"
+    },
+    {
+        "id": 4,
+        "Nombre": "Romina Juarez",
+        "DNI": "3943332"
+    },
+    {
+        "id": 5,
+        "Nombre": "Lucas Alvarez",
+        "DNI": "34212332"
+    }
+    
+  ],
+  "Caja": [
+    {
+        "id": 1,
+        "Monto": 3333
+    }
+  ],
+  "Tickets": [
+        {
+            "id": 1,
+            "MontoApuesta": 300.00,
+            "Resultado": null,
+            "Seleccion": "X",
+            "Pagada": false,
+            "PartidoId": 1,
+            "PersonaId": 1
+        },
+        {
+            "id": 2,
+            "MontoApuesta": 800.00,
+            "Resultado": null,
+            "Seleccion": "1",
+            "Pagada": false,
+            "PartidoId": 3,
+            "PersonaId": 1
+        },
+        {
+            "id": 3,
+            "MontoApuesta": 100.00,
+            "Resultado": null,
+            "Seleccion": "X",
+            "Pagada": false,
+            "PartidoId": 2,
+            "PersonaId": 1
+        },
+        {
+            "id": 4,
+            "MontoApuesta": 1000.00,
+            "Resultado": null,
+            "Seleccion": "X",
+            "Pagada": false,
+            "PartidoId": 1,
+            "PersonaId": 2
+        },
+        {
+            "id": 5,
+            "MontoApuesta": 200.00,
+            "Resultado": null,
+            "Seleccion": "1",
+            "Pagada": false,
+            "PartidoId": 1,
+            "PersonaId": 3
+        },
+        {
+            "id": 6,
+            "MontoApuesta": 1200.00,
+            "Resultado": null,
+            "Seleccion": "2",
+            "Pagada": false,
+            "PartidoId": 1,
+            "PersonaId": 4
+        },
+        {
+            "id": 7,
+            "MontoApuesta": 100.00,
+            "Resultado": null,
+            "Seleccion": "x",
+            "Pagada": false,
+            "PartidoId": 2,
+            "PersonaId": 4
+        },
+        {
+            "id": 8,
+            "MontoApuesta": 200.00,
+            "Resultado": null,
+            "Seleccion": "2",
+            "Pagada": false,
+            "PartidoId": 3,
+            "PersonaId": 5
+        }
+    ]
+}

@@ -3,6 +3,7 @@ import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import styled from "styled-components";
 import {getMatches} from "../actions"
+import match from "../reducers/match";
 
 export const StyledViewMatches = styled.div`
     background-color: coral;
@@ -11,22 +12,30 @@ export const StyledViewMatches = styled.div`
     }
 `;
 
-const ViewMatches = ({isFetching, getMatches}) => {
+const ViewMatches = ({isFetching, matches, getMatches}) => {
     useEffect(()=>{
-        getMatches();
-    },[])
+        getMatches()
+    },[getMatches])
 
+    if (isFetching) {
+        return "Waiting";
+    }
+
+    console.log(matches)
     return (
         <StyledViewMatches>
             <h2>View Matches</h2>
+
+            {matches.matches.map(m => <div key={`${m.Equipo1}${m.Equipo1}`}>{m.Equipo1} - {m.Equipo2}</div>)}
         </StyledViewMatches>
     )
 }
 
 
-const mapStateToProps = ({ matches }) => ({
-    isFetching: matches.isFetching,
-    matches: matches.matches,
+
+const mapStateToProps = ({ match }) => ({
+    isFetching: match.isFetching,
+    matches: match,
 });
 
 export default connect(mapStateToProps, { getMatches })(ViewMatches);
