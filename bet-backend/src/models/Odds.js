@@ -8,15 +8,15 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             defaultValue: Sequelize.UUIDV4
         },
-        One:{
+        one:{
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,    
         },
-        X:{
+        x:{
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,    
         },
-        Two:{
+        two:{
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,    
         },

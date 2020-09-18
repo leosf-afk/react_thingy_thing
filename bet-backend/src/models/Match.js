@@ -20,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(1),
             allowNull: false,
             validate: {
-                isUpperCase: true,
-                isIn: [["1", "X", "2"]] 
+                isIn: [["-", "1", "X", "2"]] 
             }      
         },
     })

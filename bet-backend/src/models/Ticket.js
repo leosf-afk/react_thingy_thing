@@ -40,6 +40,14 @@ module.exports = (sequelize, DataTypes) => {
                 isUpperCase: true,
                 isIn: [["P", "N", "E"]] 
             }    
+        },
+        bet:{
+            type: DataTypes.STRING(1),
+            allowNull: false,
+            validate: {
+                isUpperCase: true,
+                isIn: [["1", "X", "2"]] 
+            }      
         }
     })
 }
