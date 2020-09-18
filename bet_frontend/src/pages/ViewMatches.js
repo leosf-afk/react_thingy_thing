@@ -3,7 +3,6 @@ import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import styled from "styled-components";
 import {getMatches} from "../actions"
-import match from "../reducers/match";
 
 export const StyledViewMatches = styled.div`
     background-color: coral;
@@ -30,8 +29,6 @@ const ViewMatches = ({isFetching, matches, getMatches}) => {
         </StyledViewMatches>
     )
 }
-
-
 
 const mapStateToProps = ({ match }) => ({
     isFetching: match.isFetching,
