@@ -10,7 +10,7 @@ const sequelize = new Sequelize({
     storage: 'db.sqlite'
 });
 
-(async () => await sequelize.sync({alter:true}))();
+//(async () => await sequelize.sync({alter:true}))();
 
 const Person = PersonModel(sequelize,DataTypes);
 const Odd = OddModel(sequelize,DataTypes);
@@ -29,6 +29,19 @@ const Till = TillModel(sequelize,DataTypes);
 //
 //Person.hasMany(Ticket, {foreignKey: "personId"})
 //Match.hasMany(Ticket, {foreignKey: "matchId"})
+//Match.Odd = Match.belongsTo(Odd);
+//Odd.Match = Odd.belongsTo(Match);
+
+Match.Odd = Match.hasOne(Odd);
+//Ticket.Persons = Ticket.hasOne(Person);
+//Person.Tickets = 
+//Person.hasMany(Ticket);
+//Ticket.Person = Ticket.hasOne(Person);
+Person.hasMany(Ticket)
+
+Match.hasMany(Ticket, {as: 'tickets'})
+//Ticket.Match = Ticket.hasOne(Match);
+
 
 module.exports = {
     Person,

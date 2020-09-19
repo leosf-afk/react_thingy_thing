@@ -6,6 +6,6 @@ const {
 } = require("../controllers/match");
 
 router.route("/").get(getMatches);
-router.route("/add").get(addMatch);
+router.route("/add").post(addMatch);
 
 module.exports = router;

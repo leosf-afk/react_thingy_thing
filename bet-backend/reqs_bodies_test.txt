@@ -1,0 +1,9 @@
+//add match
+{
+    "team1": "Banfield",
+    "team2": "Racing",
+    "result": "-",
+    "Odd": {"one":1.33,"two":4.33,"x":10.33}
+}
+
+//add ticket

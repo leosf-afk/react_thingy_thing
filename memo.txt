@@ -3,4 +3,41 @@
 -Do Not Define Components Within Components
 -setNotes(notes.concat(noteObject))
 The method does not mutate the original notes array, but rather creates a new copy of the array with the new item added to the end. This is important since we must never mutate state directly in React!
--
+-npm run server !!!!!!
+
+npx create-react-app app-name
+
+async -> function that return a promise
+await -> makes js wait until promise settles and returns its result
+
+npx create-react-app app-name
+
+#back
+npm install express --save
+npm install --save-dev nodemon
+npm install sequelize --save
+npm install sqlite3
+
+#front
+npm install axios --save
+npm install --save react-router-dom
+npm install --save redux react-redux
+npm install --save styled-components
+npm install redux-thunk
+npm install redux-devtools-extension --save
+
+--
+const notes = await Note.find({})
+console.log('operation returned the following notes', notes)
+The code looks exactly like synchronous code. The execution of code pauses at const notes = await Note.find({}) and waits until the related promise is fulfilled, and then continues its execution to the next line. When the execution continues, the result of the operation that returned a promise is assigned to the notes variable.
+--
+
+One more warning: If you notice you are mixing async/await and then calls, it is 99% certain you are doing something wrong. Use either or, never both. 
+
+
+id 
+importancia 
+estimacion inicial
+como probarlo 
+notas
+

@@ -24,9 +24,9 @@ exports.getMatches = asyncHandler(async (req, res, next) => {
 
 exports.addMatch = asyncHandler(async (req, res, next) => {
     console.log(req.body)
-    const match = await Match.create(req.body,{include:[{association: Match.Odd}]});
-
+    const match = await Match.create(req.body, {include: [ Odd ]});
+    
     await match.save();
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, data: match });
 })

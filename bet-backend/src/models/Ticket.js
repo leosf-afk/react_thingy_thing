@@ -10,23 +10,23 @@ module.exports = (sequelize, DataTypes) => {
         },
         paid:{
             type: DataTypes.BOOLEAN,
-            allowNull: false,    
+            allowNull: false,
+            defaultValue: false,
         },
         amount:{
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
-                
         },
-        //Result: P, N or A
+        //Result: P, W, N or A
         //W Won
         //L Lose
         //N Nulled
         result:{
             type: DataTypes.STRING(1),
             allowNull: false,
+            defaultValue: "P",
             validate: {
-                isUpperCase: true,
-                isIn: [["W", "L", "N"]] 
+                isIn: [["P", "W", "L", "N"]] 
             }    
         },
         //STATE: P, N or A
@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
         state:{
             type: DataTypes.STRING(1),
             allowNull: false,
+            defaultValue: "P",
             validate: {
-                isUpperCase: true,
                 isIn: [["P", "N", "E"]] 
             }    
         },
@@ -45,7 +45,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(1),
             allowNull: false,
             validate: {
-                isUpperCase: true,
                 isIn: [["1", "X", "2"]] 
             }      
         }
