@@ -1,5 +1,6 @@
 const express = require("express")
 const match = require("./routes/match")
+const till = require("./routes/till")
 const ticket = require("./routes/ticket")
 const bodyParser = require('body-parser')
 
@@ -12,6 +13,7 @@ app.get('/alive', (req,res) => {
 
 app.use("/matches", match);
 app.use("/tickets", ticket);
+app.use("/till", till);
 
 const PORT = 3001
 app.listen(PORT, console.log(`Server started at http://localhost:${PORT}`));
