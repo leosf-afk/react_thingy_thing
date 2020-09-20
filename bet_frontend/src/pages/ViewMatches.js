@@ -25,14 +25,21 @@ const ViewMatches = ({isFetching, matches, getMatches}) => {
         <StyledViewMatches>
             <h2>View Matches</h2>
 
-            {matches.matches.map(m => <div key={`${m.Equipo1}${m.Equipo1}`}>{m.Equipo1} - {m.Equipo2}</div>)}
+            {matches.matches.data.map(m => <div key={`${m.team1}${m.team1}`}>
+                {m.team1} - {m.team2} <br />
+                {m.Odd.one} {m.Odd.x} {m.Odd.two} 
+            </div>)}
         </StyledViewMatches>
     )
 }
 
-const mapStateToProps = ({ match }) => ({
-    isFetching: match.isFetching,
-    matches: match,
-});
+const mapStateToProps = ({ matches }) => {
+    console.log(matches)
+    const m = {
+        isFetching: matches.isFetching,
+        matches: matches
+    }
+    return m;
+};
 
 export default connect(mapStateToProps, { getMatches })(ViewMatches);

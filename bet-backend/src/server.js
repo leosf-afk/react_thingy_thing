@@ -4,8 +4,10 @@ const till = require("./routes/till")
 const ticket = require("./routes/ticket")
 const bodyParser = require('body-parser')
 
+var cors = require('cors')
 const app = express()
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/alive', (req,res) => {
     res.send('<h1>Yes</h1>')

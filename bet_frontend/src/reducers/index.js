@@ -1,6 +1,6 @@
 import {combineReducers} from "redux"
-import match from "./match"
+import matches from "./match"
 
 export default combineReducers({
-    match,
+    matches,
 })

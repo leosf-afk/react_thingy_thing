@@ -12,15 +12,15 @@ const useInput = (defaultValue) => {
 };
 
 const AddMatch = ({addMatch}) => {
-    const equipo1 = useInput("");
-    const equipo2 = useInput("");
+    const team1 = useInput("");
+    const team2 = useInput("");
     
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const payload = {
-            Equipo1: equipo1.value,
-            Equipo2: equipo2.value
+            team1: team1.value,
+            team2: team2.value
         }
 
         console.log("PAYLOAD")
@@ -35,15 +35,15 @@ const AddMatch = ({addMatch}) => {
             <form onSubmit={handleSubmit}>
                 <input
                    type="text"
-                   placeholder="equipo1"
-                   value={equipo1.value}
-                   onChange={equipo1.onChange}
+                   placeholder="team1"
+                   value={team1.value}
+                   onChange={team1.onChange}
                 />
                 <input
                    type="text"
-                   placeholder="equipo2"
-                   value={equipo2.value}
-                   onChange={equipo2.onChange}
+                   placeholder="team2"
+                   value={team2.value}
+                   onChange={team2.onChange}
                 />
                 
             <button type="submit">Add</button>

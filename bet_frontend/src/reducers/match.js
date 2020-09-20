@@ -5,7 +5,7 @@ const initialState = {
     matches: [],
 }
 
-const match = (state=initialState, action) => {
+const matches = (state=initialState, action) => {
     switch(action.type){
         case GET_MATCHES:
             return action.payload;
@@ -14,5 +14,5 @@ const match = (state=initialState, action) => {
     }
 };
 
-export default match;
+export default matches;
 
