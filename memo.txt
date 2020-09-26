@@ -17,14 +17,15 @@ npm install express --save
 npm install --save-dev nodemon
 npm install sequelize --save
 npm install sqlite3
+npm install cors
 
 #front
 npm install axios --save
 npm install --save react-router-dom
 npm install --save redux react-redux
-npm install --save styled-components
 npm install redux-thunk
 npm install redux-devtools-extension --save
+npm install --save styled-components
 
 --
 const notes = await Note.find({})
@@ -41,3 +42,63 @@ estimacion inicial
 como probarlo 
 notas
 
+https://drive.google.com/drive/folders/1RZkz8OG3W-UvnEdEgmFk1vW45Grue9MF?usp=sharing
+
+Array spread syntax
+Because we now have quite good tests for the reducer, we can refactor the code safely.
+Adding a new note creates the state it returns with Arrays concat-function. Let's take a look at how we can achieve the same by using the JavaScript array spread -syntax:
+
+const noteReducer = (state = [], action) => {
+  switch(action.type) {
+    case 'NEW_NOTE':
+      return [...state, action.data]
+    case 'TOGGLE_IMPORTANCE':
+      // ...
+    default:
+    return state
+  }
+}
+
+en action van los datos nuevos, se agregan a state
+
+calcular story points totales en la semana
+
+
+para semana que viene
+
+ya armado 
+backlog completo
+por cada user stories, todas las tareas con su tiempo estimado en sp u en horas (esta en el libro como se calculan y como se describe una tares)
+
+user stories 
+puntos de historia
+tareas
+ver en libro como describir una task
+
+the state of the application is a single js object
+everytime you want to change the state, you have to dispatcha an action, action describe the change
+reducer takes state pass to a PURE function and return the new state of the application
+previous state -> action -> next state
+
+reducer: 
+conter = (state, action) => {
+	//si estado indefinido devuelve estado inicial
+	if(typeof state === "undefined"){
+		return 0;
+	}
+
+	//actions
+	if(action.type === "INCREMENT"){
+		return state+1
+	} else if (action.type === "DECREMENT"){
+		return state-1 
+	} else {
+		//si action desconocido devuelve el estado actua
+		return state;
+	}
+}
+
+//teoria:
+
+mapStateToProps => post
+mapDispatchToProps => get
