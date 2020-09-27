@@ -17,9 +17,9 @@ exports.getMatches = asyncHandler(async (req, res, next) => {
     console.log("MATCHES GET")
 
     console.log(matches)
-    if (matches.length != 0) return res.status(200).json({ success: true, data: matches });
+    if (matches.length != 0) return res.status(200).json({ success: true, matches: matches });
 
-    return res.status(200).json({ success: true, data: [] })
+    return res.status(200).json({ success: true, matches: [] })
 })
 
 exports.addMatch = asyncHandler(async (req, res, next) => {
@@ -28,5 +28,5 @@ exports.addMatch = asyncHandler(async (req, res, next) => {
     
     await match.save();
 
-    res.status(200).json({ success: true, data: match });
+    res.status(200).json({ success: true, match: match });
 })
