@@ -5,6 +5,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import axios from "axios";
+import {formInputStyle,formButtonStyle,formStyle} from "./styles";
 
 const api = axios.create({
   baseURL: "http://localhost:3001",
@@ -15,8 +16,6 @@ const api = axios.create({
 //const res = await api.get("/tickets");
 //const res = await api.post('/matches',  equipos);
 //const res = await api.get("/matches");
-      
-
 
 const lg  = (wher, msg) => {
   console.log(wher)
@@ -45,6 +44,9 @@ const matchReducer = (state = [], action) => {
 
 const ticketReducer = (state = [], action) => {
   switch(action.type){
+    case "NEW_TICKET":
+      lg("NEWTICKET", state)
+      return state
     default: 
       return state
   }
@@ -53,30 +55,53 @@ const ticketReducer = (state = [], action) => {
 
 const addMatch = (data) => {
   return async dispatch => {
-    //const new_match = await api.addMatch(data)..
-    const new_match = {team1:"San Lorenzo", team2:"Independiente",Odds:{"1":1.11,"x":3.33,"2":2.22}}
+    const res = await api.post('/matches/add',  data);
+    //const new_match = {team1:"San Lorenzo", team2:"Independiente",Odds:{"1":1.11,"x":3.33,"2":2.22}}
     dispatch({
       type: "NEW_MATCH",
-      data: new_match
+      data: res.data.match
     })
   }
 }
 
 const getMatches = () => {
     return async dispatch => {
-    //const new_match = await api.addMatch(data)..
-    const matches = 
-        [
-          {team1:"Boca", team2:"Racing",Odds:{"1":1.11,"x":3.33,"2":2.22}},
-          {team1:"Banfield", team2:"Lanus",Odds:{"1":1.11,"x":3.33,"2":2.22}},
-        ]
-      
+    const res = await api.get("/matches")
+    //const matches = 
+    //    [
+    //      {team1:"Boca", team2:"Racing",Odds:{"1":1.11,"x":3.33,"2":2.22}},
+    //      {team1:"Banfield", team2:"Lanus",Odds:{"1":1.11,"x":3.33,"2":2.22}},
+    //    ]
+    lg("GET MATCHES", res)
     dispatch({
       type: "GET_MATCHES",
-      data: matches
+      data: res.data.matches
     })
   }
+}
 
+//////////ticket actions
+const addTicket = (data) => {
+  return async dispatch => {
+    //const res = await api.post('/matches/add',  data);
+    //const new_match = {team1:"San Lorenzo", team2:"Independiente",Odds:{"1":1.11,"x":3.33,"2":2.22}}
+    console.log(data)
+    dispatch({
+      type: "NEW_TICKET",
+      data: {}
+    })
+  }
+}
+
+const updateMatchResult = (data) => {
+  return async dispatch => {
+    const res = await api.put('/matches/update',  data);
+    
+    dispatch({
+      type: "UPDATE_MATCH",
+      data: res.data.match
+    })
+  }
 }
 
 const appReducer = combineReducers({
@@ -94,10 +119,13 @@ const Ticket = () => {
 }
 
 const ViewTickets = () => {
-    
+    const _style = {
+      width: "50%",
+      backgroundColor: "#f9d56e",
+    }
     return (
-        <div>
-            tickets:
+        <div style={_style}>
+            <h2>tickets:</h2>
             <Ticket />
             <Ticket />
             <Ticket />
@@ -105,18 +133,40 @@ const ViewTickets = () => {
     )
 }
 
-const AddTicket = ({dispatch}) => {
+let AddTicket = (props) => {
     
+    const _addTicket = (event) => {
+      console.log("in add _tick")
+      lg("add ticket Event value", event.target.partido.value)
+      props.addTicket(event.target.partido.value)
+    }
+
     return (
-        <div>
-            add ticket
+        <div style={formStyle}>
+            <h2>Add Ticket:</h2>
+            <form onSubmit={_addTicket}>
+            Name<input style={formInputStyle} type="text" placeholder="name"/>
+            DNI<input style={formInputStyle} type="text" placeholder="dni"/> 
+            Amount<input style={formInputStyle} type="text" placeholder="amount"/>
+              <MatchesDropDown />
+            
+              <button style={formButtonStyle} type="submit">Add</button>
+            
+
+            </form>
+
         </div>
     )
 }
 
+AddTicket = connect(
+  null, 
+  {addTicket}
+)(AddTicket)
 
-const Match = ({team1, team2}) => {
-    
+
+const Match = ({team1, team2, odds}) => {
+    console.log(odds)
     return (
         <div>
             {team1} - {team2} 
@@ -125,6 +175,9 @@ const Match = ({team1, team2}) => {
                 <option value="X">X</option>
                 <option value="2">2</option>
             </select>
+            <br />
+              1: {odds.one} - x: {odds.x} - 2: {odds.two}
+            <br />
             
         </div>
     )
@@ -135,15 +188,20 @@ let ViewMatches = (props) => {
     lg("VIEW MATCHES", props)
     const {matches} = props
     //return (<div>ahre</div>)
+    const _style = {
+      width: "50%",
+      backgroundColor: "#f9d56e",
+    }
     if(matches){
       return (
-        <div>
-            matches:
+        <div style={_style}>
+            <h2>Matches:</h2>
             {matches.map(match =>
               <Match
                 key={match.id}
                 team1={match.team1}
                 team2={match.team2}
+                odds={match.Odd}
               />
             )}
             
@@ -151,7 +209,7 @@ let ViewMatches = (props) => {
       )
   } else {
     return (
-      <div>No matches loaded yet</div>
+      <div style={_style}>No matches loaded yet</div>
     )
   }
 }
@@ -167,13 +225,20 @@ ViewMatches = connect(mapStateToViewMatchesProps, null)(ViewMatches)
 
 
 let AddMatch = (props) => {
-    lg("PROPS_ADDMATHC", props)
+    lg("PROPS_ADDMATCH", props)
     const _addMatch = async (event) => {
       console.log(event)
       event.preventDefault()
       const data = 
       {
-        team1: event.target.team1.value
+        team1: event.target.team1.value,
+        team2: event.target.team2.value,
+        result: "-",
+        Odd: {
+          one:event.target.c1.value,
+          two:event.target.c2.value,
+          x:event.target.cx.value
+        }
       } 
       console.log(data)
       
@@ -183,16 +248,19 @@ let AddMatch = (props) => {
     }
   
     return (
-        <div>
-            add Match
+        <div style={formStyle}>
+            <h2>Add Match</h2>
             <form onSubmit={_addMatch}>
-                <input type="text" placeholder="team1" name="team1" />
-                <input type="text" placeholder="team2" name="team2" />
+                <h4>TEAMS:</h4>
+                <input style={formInputStyle} type="text" placeholder="team1" name="team1" />
+                <input style={formInputStyle} type="text" placeholder="team2" name="team2" />
                 <br /> 
-                <input type="text" placeholder="c1" name="c1"/>
-                <input type="text" placeholder="cx" name="cx" />
-                <input type="text" placeholder="c2" name="c2"/>
-            <button type="submit">Add</button>
+                <h4>ODDS:</h4>
+                <input style={formInputStyle} type="text" placeholder="c1" name="c1"/>
+                <input style={formInputStyle} type="text" placeholder="cx" name="cx" />
+                <input style={formInputStyle} type="text" placeholder="c2" name="c2"/>
+                <br /> 
+            <button style={formButtonStyle} type="submit">Add</button>
             </form>
 
         </div>
@@ -203,6 +271,45 @@ AddMatch = connect(
   null, 
   {addMatch}
 )(AddMatch)
+
+/////////////////////////////////////////////////////////////////
+
+let MatchesDropDown = (props) => {
+  //console.log(props)
+  lg("MatchesDropDown", props)
+  const {matches} = props
+  //return (<div>ahre</div>)
+  if(matches){
+    return (
+      <div>
+          Match:
+          <select style={formInputStyle} name="partido" id="partido">
+            
+            {matches.map(m => 
+            <option key={`${m.team1}-${m.team2}`} value={m.id}>{m.team1}-{m.team2}
+            </option>)}
+            
+            </select>
+            
+          
+      </div>
+    )
+  } else {
+    return (
+      <div>No matches loaded yet</div>
+    )
+  }
+}
+
+const mapStateToMatchesDropDownProps = (state) => {
+  lg("MAP STATE VIEW", state)
+  return {
+    matches: state.matches
+  }
+}
+MatchesDropDown = connect(mapStateToMatchesDropDownProps, null)(MatchesDropDown)
+
+////////////////////////////////////////////////////////////////////////////////////////////
 
 const Balance = () => {
     
@@ -220,12 +327,10 @@ const App = () => {
   },[dispatch]) 
 
     return (
-        <div>
-        <h1>Matches</h1>
+        <div style={{backgroundColor: "#e8505b"}}>
             <ViewMatches />
             <AddMatch />
             
-        <h1>Tickets</h1>
             <ViewTickets />
             <AddTicket />
 
