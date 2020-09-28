@@ -52,7 +52,19 @@ const ticketReducer = (state = [], action) => {
   }
 }
 
+const tillReducer = (state = [], action) => {
+  switch(action.type){
+    case "GET_TILL_AMOUNT":
+      return state
+    case "UPDATE_TILL_AMOUNT":
+      return state
+      
+      default: 
+      return state
+  }
+}
 
+//////////match actions
 const addMatch = (data) => {
   return async dispatch => {
     const res = await api.post('/matches/add',  data);
@@ -83,7 +95,8 @@ const getMatches = () => {
 //////////ticket actions
 const addTicket = (data) => {
   return async dispatch => {
-    //const res = await api.post('/matches/add',  data);
+    const res = await api.post('/tickets/generate',  data);
+    
     //const new_match = {team1:"San Lorenzo", team2:"Independiente",Odds:{"1":1.11,"x":3.33,"2":2.22}}
     console.log(data)
     dispatch({
@@ -106,7 +119,8 @@ const updateMatchResult = (data) => {
 
 const appReducer = combineReducers({
     matches: matchReducer,
-    tickets: ticketReducer
+    tickets: ticketReducer,
+    till: tillReducer,
 })
 
 const Ticket = () => {
@@ -138,7 +152,18 @@ let AddTicket = (props) => {
     const _addTicket = (event) => {
       console.log("in add _tick")
       lg("add ticket Event value", event.target.partido.value)
-      props.addTicket(event.target.partido.value)
+      const data = {
+        name: event.target.name.value, 
+        dni: event.target.dni.value,
+        Tickets: 
+        [{
+            amount: event.target.amount.value,
+            bet: event.target.bet.value,
+            MatchId: event.target.partido.value
+        }]
+      }
+      
+      props.addTicket(data)
     }
 
     return (
@@ -149,6 +174,11 @@ let AddTicket = (props) => {
             DNI<input style={formInputStyle} type="text" placeholder="dni"/> 
             Amount<input style={formInputStyle} type="text" placeholder="amount"/>
               <MatchesDropDown />
+              <select name="bet" id="bet">            
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="X">X</option>
+              </select>
             
               <button style={formButtonStyle} type="submit">Add</button>
             
@@ -247,13 +277,14 @@ let AddMatch = (props) => {
       props.addMatch(data)
     }
   
+    const team2_str = "taratata";
     return (
         <div style={formStyle}>
             <h2>Add Match</h2>
             <form onSubmit={_addMatch}>
                 <h4>TEAMS:</h4>
                 <input style={formInputStyle} type="text" placeholder="team1" name="team1" />
-                <input style={formInputStyle} type="text" placeholder="team2" name="team2" />
+                <input style={formInputStyle} type="text" placeholder="team2" name="team2" value={team2_str} />
                 <br /> 
                 <h4>ODDS:</h4>
                 <input style={formInputStyle} type="text" placeholder="c1" name="c1"/>
@@ -267,6 +298,7 @@ let AddMatch = (props) => {
     )
 }
 
+//esto podria ser abm generico: {alta:addMatch,baja:deleteMatch,modificacion:editMatch}
 AddMatch = connect(
   null, 
   {addMatch}
@@ -283,8 +315,7 @@ let MatchesDropDown = (props) => {
     return (
       <div>
           Match:
-          <select style={formInputStyle} name="partido" id="partido">
-            
+          <select style={formInputStyle} name="partido" id="partido">            
             {matches.map(m => 
             <option key={`${m.team1}-${m.team2}`} value={m.id}>{m.team1}-{m.team2}
             </option>)}
@@ -321,10 +352,10 @@ const Balance = () => {
 }
 
 const App = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getMatches()) 
-  },[dispatch]) 
+    const dispatch = useDispatch();
+    useEffect(() => {
+      dispatch(getMatches()) 
+    },[dispatch]) 
 
     return (
         <div style={{backgroundColor: "#e8505b"}}>
