@@ -32,14 +32,18 @@ const Till = TillModel(sequelize,DataTypes);
 //Match.Odd = Match.belongsTo(Odd);
 //Odd.Match = Odd.belongsTo(Match);
 
-Match.Odd = Match.hasOne(Odd);
 //Ticket.Persons = Ticket.hasOne(Person);
 //Person.Tickets = 
 //Person.hasMany(Ticket);
 //Ticket.Person = Ticket.hasOne(Person);
-Person.hasMany(Ticket)
 
+//odd tiene matchid y con match se puede traer odd
+Match.Odd = Match.hasOne(Odd);
+//ticket tiene personId y con person se puede traer tickets
+Person.hasMany(Ticket)
+//ticket tiene matchId y con match se puede traer tickets
 Match.hasMany(Ticket, {as: 'tickets'})
+//opcion
 //Ticket.Match = Ticket.hasOne(Match);
 
 
@@ -49,4 +53,5 @@ module.exports = {
     Match,
     Ticket,
     Till,
+    sequelize
 }

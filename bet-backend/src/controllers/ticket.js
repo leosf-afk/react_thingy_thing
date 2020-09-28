@@ -1,6 +1,7 @@
-const {Op} = require('sequelize')
-const {Match,Odd,Person,Till,Ticket} = require('../sequelize')
+const {Op,QueryTypes} = require('sequelize')
+const {Match,Odd,Person,Till,Ticket,sequelize} = require('../sequelize')
 const asyncHandler = require("../middlewares/asyncHandler")
+
 
 exports.getTickets = asyncHandler(async (req, res, next) => {
     //const tickets = await Ticket.findAll({
@@ -24,14 +25,49 @@ exports.getTickets = asyncHandler(async (req, res, next) => {
             "dni",
         ],
         include: [
-            { model: Ticket, attributes: ["paid", "amount", "result", "state", "bet"] }
-        ],
+            { 
+                model: Ticket, 
+                attributes: ["paid", "amount", "result", "state", "bet", "MatchId",]
+            }
+        ]
     })
+
+    
+   // console.log(tickets.toJSON())
+        
+    //tickets.forEach(async (ticket) => {
+    //    ticket.Tickets.forEach(async (t) => {
+    //        
+    //        console.log(t.toJSON())
+    //    })
+    //})
+
+    for (const ticket of tickets) {
+        for (const t of ticket.Tickets) {
+            
+        }
+    }
+
+    //        const match = await Match.findByPk(t.MatchId, {
+    //            attributes: [
+    //              "id",
+    //              "team1",
+    //              "team2",
+    //              "result",
+    //              //"createdAt",
+    //            ],
+    //            include: [{ model: Odd, attributes: ["one", "x", "two"] }],
+    //        });
+    //        console.log(match.toJSON())
+    //        
+    //        t.setDataValue("match", match);
+           
 
     console.log("TICKETS GET")
 
-    console.log(tickets)
-    if (tickets.length != 0) return res.status(200).json({ success: true, data: tickets });
+    const tickets_ = await sequelize.query("SELECT * FROM (tickets INNER JOIN matches ON tickets.MatchId = matches.id)", { type: QueryTypes.SELECT });
+    if (tickets.length != 0) return res.status(200).json({ success: true, data: tickets_ });
+
 
     return res.status(200).json({ success: true, data: [] })
 })
