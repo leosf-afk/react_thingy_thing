@@ -47,6 +47,10 @@ const ticketReducer = (state = [], action) => {
     case "NEW_TICKET":
       lg("NEWTICKET", state)
       return state
+    case "GET_TICKETS":
+      lg("TICKETS REDUCER - GET TICKETS", action.data)
+      return action.data
+
     default: 
       return state
   }
@@ -59,7 +63,7 @@ const tillReducer = (state = [], action) => {
     case "UPDATE_TILL_AMOUNT":
       return state
       
-      default: 
+    default: 
       return state
   }
 }
@@ -106,6 +110,17 @@ const addTicket = (data) => {
   }
 }
 
+const getTickets = () => {
+  return async dispatch => {
+  const res = await api.get("/tickets")
+  lg("GET TICKETS", res)
+  dispatch({
+    type: "GET_TICKETS",
+    data: res.data.tickets
+  })
+}
+}
+
 const updateMatchResult = (data) => {
   return async dispatch => {
     const res = await api.put('/matches/update',  data);
@@ -123,29 +138,54 @@ const appReducer = combineReducers({
     till: tillReducer,
 })
 
-const Ticket = () => {
+const Ticket = (props) => {
+   lg("!!!!!!!!!!!!!!!!!!", props)
     
     return (
         <div>
-            ticket
+           person: {props.data.name} dni:{props.data.dni}<br />
+           match: {props.data.team1}-{props.data.team2}<br />
+           bet: {props.data.bet} match result: {props.data.match_result}<br />
+           amount: ${props.data.amount}<br />
+           state: {props.data.state} <br />
+           <br /><br />
         </div>
     )
 }
 
-const ViewTickets = () => {
+let ViewTickets = (props) => {
     const _style = {
       width: "50%",
       backgroundColor: "#f9d56e",
     }
+
+    lg("IN VIEW TICKERS", props)
+
+    
     return (
         <div style={_style}>
             <h2>tickets:</h2>
-            <Ticket />
-            <Ticket />
-            <Ticket />
+            
+            {props.tickets.map(t =>
+              <Ticket
+                key={t.id}
+                data={t}
+              />
+            )}
+
         </div>
     )
 }
+
+const mapStateToViewTicketsProps = (state) => {
+  
+  lg("MAP STATE VIEWTICKETS", state)
+  return {
+    tickets: state.tickets
+  }
+}
+ViewTickets = connect(mapStateToViewTicketsProps, null)(ViewTickets)
+
 
 let AddTicket = (props) => {
     
@@ -253,7 +293,6 @@ const mapStateToViewMatchesProps = (state) => {
 }
 ViewMatches = connect(mapStateToViewMatchesProps, null)(ViewMatches)
 
-
 let AddMatch = (props) => {
     lg("PROPS_ADDMATCH", props)
     const _addMatch = async (event) => {
@@ -354,7 +393,8 @@ const Balance = () => {
 const App = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-      dispatch(getMatches()) 
+      dispatch(getMatches())
+      dispatch(getTickets())
     },[dispatch]) 
 
     return (
