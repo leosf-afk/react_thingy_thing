@@ -46,7 +46,7 @@ const ticketReducer = (state = [], action) => {
   switch(action.type){
     case "NEW_TICKET":
       lg("NEWTICKET", state)
-      return state
+      return [...state, action.data]
     case "GET_TICKETS":
       lg("TICKETS REDUCER - GET TICKETS", action.data)
       return action.data
@@ -98,15 +98,14 @@ const getMatches = () => {
 
 //////////ticket actions
 const addTicket = (data) => {
-  return async dispatch => {
-    const res = await api.post('/tickets/generate',  data);
+  return async dispatch => {      
+      const res = await api.post('/tickets/generate',  data);
+
+        dispatch({
+          type: "NEW_TICKET",
+          data: res.data.data
+      })
     
-    //const new_match = {team1:"San Lorenzo", team2:"Independiente",Odds:{"1":1.11,"x":3.33,"2":2.22}}
-    console.log(data)
-    dispatch({
-      type: "NEW_TICKET",
-      data: {}
-    })
   }
 }
 
@@ -140,13 +139,24 @@ const appReducer = combineReducers({
 
 const Ticket = (props) => {
    lg("!!!!!!!!!!!!!!!!!!", props)
-    
+  
+    const get_posible_price = () => {
+      switch(props.data.bet){
+        case "one":
+          return props.data.amount*props.data.one;  
+        case "two":
+          return props.data.amount*props.data.two;
+        case "x":
+          return props.data.amount*props.data.x;
+      }
+    }
+
     return (
         <div>
            person: {props.data.name} dni:{props.data.dni}<br />
            match: {props.data.team1}-{props.data.team2}<br />
            bet: {props.data.bet} match result: {props.data.match_result}<br />
-           amount: ${props.data.amount}<br />
+           amount: ${props.data.amount} posible price: ${get_posible_price()}<br />
            state: {props.data.state} <br />
            <br /><br />
         </div>
@@ -189,9 +199,9 @@ ViewTickets = connect(mapStateToViewTicketsProps, null)(ViewTickets)
 
 let AddTicket = (props) => {
     
-    const _addTicket = (event) => {
+    const _addTicket = async (event) => {
+      event.preventDefault()
       console.log("in add _tick")
-      lg("add ticket Event value", event.target.partido.value)
       const data = {
         name: event.target.name.value, 
         dni: event.target.dni.value,
@@ -201,30 +211,36 @@ let AddTicket = (props) => {
             bet: event.target.bet.value,
             MatchId: event.target.partido.value
         }]
+  
       }
+
+      
+      lg("add ticket data", data)
       
       props.addTicket(data)
     }
-
+//
+//</form>
+            
     return (
         <div style={formStyle}>
             <h2>Add Ticket:</h2>
             <form onSubmit={_addTicket}>
-            Name<input style={formInputStyle} type="text" placeholder="name"/>
-            DNI<input style={formInputStyle} type="text" placeholder="dni"/> 
-            Amount<input style={formInputStyle} type="text" placeholder="amount"/>
-              <MatchesDropDown />
-              <select name="bet" id="bet">            
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="X">X</option>
+            Name<input style={formInputStyle} type="text" placeholder="name" name="name"/>
+            DNI<input style={formInputStyle} type="text" placeholder="dni" name="dni"/> 
+            Amount<input style={formInputStyle} type="text" placeholder="amount" name="amount"/><br />
+            Bet:<select style={formInputStyle} name="bet" id="bet">            
+                  <option value="one">1</option>
+                  <option value="two">2</option>
+                  <option value="x">X</option>
               </select>
             
-              <button style={formButtonStyle} type="submit">Add</button>
+              <MatchesDropDown />
             
+              <button style={formButtonStyle} type="submit">Add</button>
+              </form>
 
-            </form>
-
+            
         </div>
     )
 }
@@ -313,17 +329,21 @@ let AddMatch = (props) => {
       
       event.target.team1.value = ''
       event.target.team2.value = ''
+      
+      event.target.c1.value = ''
+      event.target.c2.value = ''
+      event.target.cx.value = ''
       props.addMatch(data)
     }
   
-    const team2_str = "taratata";
+    
     return (
         <div style={formStyle}>
             <h2>Add Match</h2>
             <form onSubmit={_addMatch}>
                 <h4>TEAMS:</h4>
                 <input style={formInputStyle} type="text" placeholder="team1" name="team1" />
-                <input style={formInputStyle} type="text" placeholder="team2" name="team2" value={team2_str} />
+                <input style={formInputStyle} type="text" placeholder="team2" name="team2" />
                 <br /> 
                 <h4>ODDS:</h4>
                 <input style={formInputStyle} type="text" placeholder="c1" name="c1"/>
