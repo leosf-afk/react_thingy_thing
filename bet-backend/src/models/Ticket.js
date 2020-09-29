@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         //W Won
         //L Lose
         //N Nulled
+        //P pending
         result:{
             type: DataTypes.STRING(1),
             allowNull: false,
@@ -33,19 +34,20 @@ module.exports = (sequelize, DataTypes) => {
         //P Paid
         //N Nulled
         //E pEnding
+        //L Losed
         state:{
             type: DataTypes.STRING(1),
             allowNull: false,
             defaultValue: "P",
             validate: {
-                isIn: [["P", "N", "E"]] 
+                isIn: [["P", "N", "E", "L"]] 
             }    
         },
         bet:{
             type: DataTypes.STRING(1),
             allowNull: false,
             validate: {
-                isIn: [["1", "X", "2"]] 
+                isIn: [["one", "x", "two"]]  
             }      
         }
     })

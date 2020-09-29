@@ -16,7 +16,7 @@ exports.getMatches = asyncHandler(async (req, res, next) => {
 
     console.log("MATCHES GET")
 
-    console.log(matches)
+    //console.log(matches)
     if (matches.length != 0) return res.status(200).json({ success: true, matches: matches });
 
     return res.status(200).json({ success: true, matches: [] })
