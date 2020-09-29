@@ -2,74 +2,23 @@ const {Op,QueryTypes} = require('sequelize')
 const {Match,Odd,Person,Till,Ticket,sequelize} = require('../sequelize')
 const asyncHandler = require("../middlewares/asyncHandler")
 
-
 exports.getTickets = asyncHandler(async (req, res, next) => {
-    //const tickets = await Ticket.findAll({
-    //    attributes: [
-    //        "id",
-    //        "paid",
-    //        "amount",
-    //        "result",
-    //        "state",
-    //        "bet"
-    //    ],
-    //    include: [
-    //        { model: Person, attributes: ["id", "name", "dni"] },
-    //    //    { model: Match, attributes: ["team1", "team2", "result"] }
-    //    ],
-    //});
-
-    const tickets = await Person.findAll({
-        attributes: [
-            "name",
-            "dni",
-        ],
-        include: [
-            { 
-                model: Ticket, 
-                attributes: ["paid", "amount", "result", "state", "bet", "MatchId",]
-            }
-        ]
-    })
-
-    
-   // console.log(tickets.toJSON())
-        
-    //tickets.forEach(async (ticket) => {
-    //    ticket.Tickets.forEach(async (t) => {
-    //        
-    //        console.log(t.toJSON())
-    //    })
-    //})
-
-    for (const ticket of tickets) {
-        for (const t of ticket.Tickets) {
-            
-        }
-    }
-
-    //        const match = await Match.findByPk(t.MatchId, {
-    //            attributes: [
-    //              "id",
-    //              "team1",
-    //              "team2",
-    //              "result",
-    //              //"createdAt",
-    //            ],
-    //            include: [{ model: Odd, attributes: ["one", "x", "two"] }],
-    //        });
-    //        console.log(match.toJSON())
-    //        
-    //        t.setDataValue("match", match);
-           
-
     console.log("TICKETS GET")
 
-    const tickets_ = await sequelize.query("SELECT * FROM (tickets INNER JOIN matches ON tickets.MatchId = matches.id)", { type: QueryTypes.SELECT });
-    if (tickets.length != 0) return res.status(200).json({ success: true, data: tickets_ });
+    const tickets_ = await sequelize.query(
+        `SELECT Tickets.id, name, dni, bet, paid, state, 
+        Tickets.result as ticket_result, 
+        Matches.result as match_result,
+        amount, team1, team2, Tickets.MatchId as matchId
+        FROM 
+        ((tickets INNER JOIN matches ON tickets.MatchId = matches.id)
+        INNER JOIN people ON tickets.PersonId = People.id)`, { type: QueryTypes.SELECT });
+    
+    
 
+    if (tickets_.length != 0) return res.status(200).json({ success: true, tickets: tickets_ });
 
-    return res.status(200).json({ success: true, data: [] })
+    return res.status(200).json({ success: true, tickets: [] })
 })
 
 exports.generateTicket = asyncHandler(async (req, res, next) => {
