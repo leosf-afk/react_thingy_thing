@@ -62,4 +62,21 @@ exports.editMatch = asyncHandler(async (req, res, next) => {
 
   
     res.status(200).json({ success: true, match: match });
+});
+
+exports.editMatchResult = asyncHandler(async (req, res, next) => {
+  console.log("EEEEEEEEEEEEEDITING MATCH")
+  const match = await Match.findByPk(req.body.id, {
+    attributes: [
+      "id",
+      "team1",
+      "team2",
+      "result",
+    ],
+    include: [{ model: Odd, attributes: ["one", "x", "two"] }],
   });
+
+  match.result = req.body.result
+  match.save()
+  res.status(200).json({ success: true, data: match });
+});
