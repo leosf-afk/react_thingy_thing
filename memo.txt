@@ -102,3 +102,22 @@ conter = (state, action) => {
 
 mapStateToProps => post
 mapDispatchToProps => get
+
+
+cliente no se si iria
+el problema si no se agrega cliente es que queda sin normalizar
+las tasks no se si van
+filtros por  ahora no
+
+hay que tener en cuenta que un primer abm ""base"" va tomar mas tiempo que los otros, casi el triple diria yo 
+
+
+sprint backlog: seleccion de tareas del backlog
+sprint planning: duracion fija, no pasar de eso -> ver agenda pag 21
+
+sprint 1: home abm base producto
+
+en backlog sprint se puede cambiar las prioridades, se puede dividir tambien
+
+EL CLIENTE DICE CUANDO ESTA TERMINADO
+
