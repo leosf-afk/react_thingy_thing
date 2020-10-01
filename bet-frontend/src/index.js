@@ -5,7 +5,15 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import axios from "axios";
-import {formInputStyle,formButtonStyle,formStyle} from "./styles";
+import {
+  formInputStyle,
+  formButtonStyle,
+  formStyle,
+  cardStyle,
+  ticketPriceStyle,
+  ticketStyle,
+  mainComponentsStyle
+} from "./styles";
 
 const api = axios.create({
   baseURL: "http://localhost:3001",
@@ -35,10 +43,8 @@ const matchReducer = (state = [], action) => {
     case "NEW_MATCH":
       return [...state, action.data]
     case "GET_MATCHES":
-      lg("MATCH REDUCER - GET MATCHES", action.data)
       return action.data
     case "EDIT_MATCH":
-      lg("MATCH REDUCER -  EDIT_MATCH", action.data)
       return state
     default: 
       return state
@@ -48,12 +54,11 @@ const matchReducer = (state = [], action) => {
 const ticketReducer = (state = [], action) => {
   switch(action.type){
     case "NEW_TICKET":
-      lg("NEWTICKET", state)
       return [...state, action.data]
     case "GET_TICKETS":
-      lg("TICKETS REDUCER - GET TICKETS", action.data)
       return action.data
-      
+    case "PAY_TICKET":
+      return state
     default: 
       return state
   }
@@ -64,10 +69,40 @@ const tillReducer = (state = 0, action) => {
     case "GET_TILL_AMOUNT":
       return action.amount
     case "UPDATE_TILL_AMOUNT":
-      return state
-      
+      return state      
     default: 
       return state
+  }
+}
+
+const ticketFilterReducer = (state="ALL",action) => {
+  switch(action.type){
+    case "SET_FILTER":
+      return action.filter
+    default:
+      return state
+  }
+}
+
+const matchFilterReducer = (state="ALL",action) => {
+  switch(action.type){
+    case "SET_FILTER":
+      return action.filter
+    default:
+      return state
+  }
+}
+
+const changeTicketFilter = (filter) => {
+  return {
+    type: "SET_FILTER",
+    filter
+  }
+}
+const changeMatchFilter = (filter) => {
+  return {
+    type: "SET_FILTER",
+    filter
   }
 }
 
@@ -147,25 +182,57 @@ const getTickets = () => {
   }
 }
 
+const payTicket = (data) => {
+  return async dispatch => {      
+      const res = await api.post('/tickets/pay',  data);
+      dispatch({
+          type: "PAY_TICKET",
+          data: res.data.data
+      })
+  }
+}
+
+
 const appReducer = combineReducers({
     matches: matchReducer,
     tickets: ticketReducer,
     till: tillReducer,
+    matchFilter: matchFilterReducer,
+    ticketFilter: ticketFilterReducer,
 })
 
 let PayButton = (props) => {
-  
+  const _payTicket = async (event) => {
+    event.preventDefault()
+    const data = 
+    {
+      id: props.ticket_id,
+    }
+    props.payTicket(data)
+    window.location.reload(false);
+  }
+
   switch(props.ticket_result){
     case "P":
       return(
         <div>Pending</div>
       )
     case "W":
-      return(
-        <div>
-          <button>PAY</button>
-        </div>
-      )
+      if(props.ticket_state !== "P"){
+        return(
+          <div>
+            <form onSubmit={_payTicket}>
+              <button style={formButtonStyle} type="submit">PAY</button>
+            </form>
+          </div>
+        )
+      } else {
+        return(
+          <div>
+            PAID  
+          </div>
+        )
+      }
     case "L":
       return(
         <div>Lost</div>
@@ -181,9 +248,7 @@ let PayButton = (props) => {
   }
 }
 
-PayButton = connect()(PayButton)
-
-
+PayButton = connect(null, {payTicket})(PayButton)
 
 const Ticket = (props) => {
     const get_posible_price = () => {
@@ -198,22 +263,27 @@ const Ticket = (props) => {
     }
 
     return (
-        <div>
-           person: {props.data.name} dni:{props.data.dni}<br />
-           match: {props.data.team1}-{props.data.team2}<br />
-           bet: {props.data.bet} match result: {props.data.match_result}<br />
+      <div style={ticketStyle}>
+        <div style={cardStyle}>
+           <h3>{props.data.name} - {props.data.dni}</h3>
+           {props.data.team1}-{props.data.team2}<br />
+           bet: {props.data.bet} <br /> match result: {props.data.match_result}<br />
+          <div style={ticketPriceStyle}>
            amount: ${props.data.amount} posible price: ${get_posible_price()}<br />
-           state: {props.data.state} <br /> 
+            
+           </div>
            <PayButton 
             ticket_result={props.data.ticket_result}
             ticket_id={props.data.id}
+            ticket_state={props.data.state}
             />
-           
+        </div>
+
            <br /><br />
         </div>
     )
 }
-
+//state: {props.data.state} <br />
 let ViewTickets = (props) => {
     const _style = {
       width: "50%",
@@ -223,8 +293,8 @@ let ViewTickets = (props) => {
     lg("IN VIEW TICKERS", props)
 
     return (
-        <div style={_style}>
-            <h2>tickets:</h2>
+      <div style={mainComponentsStyle}>
+            <h2>Tickets</h2>
             
             {props.tickets.map(t =>
               <Ticket
@@ -268,17 +338,20 @@ let AddTicket = (props) => {
       lg("add ticket data", data)
       
       props.addTicket(data)
+      
+      window.location.reload(false);
     }
 //
 //</form>
             
     return (
-        <div style={formStyle}>
-            <h2>Add Ticket:</h2>
+        
+      <div style={mainComponentsStyle}>
+            <h2>Add Ticket</h2>
             <form onSubmit={_addTicket}>
-            Name<input style={formInputStyle} type="text" placeholder="name" name="name"/>
-            DNI<input style={formInputStyle} type="text" placeholder="dni" name="dni"/> 
-            Amount<input style={formInputStyle} type="text" placeholder="amount" name="amount"/><br />
+            Name<input style={formInputStyle} type="text" placeholder="name" name="name"/> 
+            DNI<input style={formInputStyle} type="text" placeholder="dni" name="dni"/><br /> 
+            Amount<input style={formInputStyle} type="text" placeholder="amount" name="amount"/> 
             Bet:<select style={formInputStyle} name="bet" id="bet">            
                   <option value="one">1</option>
                   <option value="two">2</option>
@@ -286,7 +359,7 @@ let AddTicket = (props) => {
               </select>
             
               <MatchesDropDown />
-            
+              <br />
               <button style={formButtonStyle} type="submit">Add</button>
               </form>
 
@@ -374,9 +447,10 @@ let ViewMatches = (props) => {
 
     if(matches){
       return (
-        <div style={_style}>
+        
+      <div style={mainComponentsStyle}>
             <button onClick={() => setEditMode(!editMode)}>edit</button>
-            <h2>Matches:</h2>
+            <h2>Matches</h2>
             {matches.map(match =>
               <Match
                 key={match.id}
@@ -437,7 +511,8 @@ let AddMatch = (props) => {
   
     
     return (
-        <div style={formStyle}>
+        
+      <div style={mainComponentsStyle}>
             <h2>Add Match</h2>
             <form onSubmit={_addMatch}>
                 <h4>TEAMS:</h4>
@@ -500,14 +575,10 @@ MatchesDropDown = connect(mapStateToMatchesDropDownProps, null)(MatchesDropDown)
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 let Balance = (props) => {
-  const _style = {
-    width: "50%",
-    backgroundColor: "#f9d56e",
-  }
    
     return (
-      <div style={_style}>
-          Balance: ${props.amount}
+      <div style={mainComponentsStyle}>
+          <h3>Balance: ${props.amount}</h3>
       </div>
     )
 }
@@ -520,8 +591,6 @@ const mapStateToBalanceProps = (state) => {
   }
 }
 Balance = connect(mapStateToBalanceProps, null)(Balance)
-
-
 
 const App = () => {
     const dispatch = useDispatch();
