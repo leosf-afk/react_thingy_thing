@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         state:{
             type: DataTypes.STRING(1),
             allowNull: false,
-            defaultValue: "P",
+            defaultValue: "E",
             validate: {
                 isIn: [["P", "N", "E", "L"]] 
             }    

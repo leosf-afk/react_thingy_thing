@@ -69,3 +69,33 @@ exports.generateTicket = asyncHandler(async (req, res, next) => {
 
     return res.status(200).json({ success: true, data: person });    
 })
+
+exports.payTicket = asyncHandler(async (req, res, next) => {
+    const ticket = await Ticket.findByPk(req.body.id)
+    ticket.state = "P"
+    ticket.paid = true
+    
+    await ticket.save();
+
+    const odds_ = await sequelize.query(
+        `SELECT one, x, two
+        FROM (((tickets 
+        	INNER JOIN matches ON tickets.MatchId = matches.id 
+        	INNER JOIN people ON tickets.PersonId = People.id 
+        	INNER JOIN odds ON tickets.MatchId = odds.MatchId
+        ))) WHERE Tickets.id = "${ticket.id}"`, { type: QueryTypes.SELECT });
+
+    let odd_betted = odds_[0][ticket.bet]
+    
+    const till = await Till.findAll({
+        attributes: [
+          "id",
+          "amount",
+        ]
+    });
+    const ntill = till[0]
+    ntill.amount -= ticket.amount * parseFloat(odd_betted)
+    await ntill.save();
+
+    return res.status(200).json({ success: true, tickets: [] })
+})
