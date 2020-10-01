@@ -3,7 +3,7 @@ const {Match,Odd,Person,Till,Ticket,sequelize} = require('../sequelize')
 const asyncHandler = require("../middlewares/asyncHandler")
 
 exports.getTickets = asyncHandler(async (req, res, next) => {
-    console.log("TICKETS GET")
+    //console.log("TICKETS GET")
 
     const tickets_ = await sequelize.query(
         `SELECT Tickets.id, name, dni, bet, paid, state, 

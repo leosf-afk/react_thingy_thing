@@ -48,7 +48,10 @@ FROM
 (((tickets INNER JOIN matches ON tickets.MatchId = matches.id INNER JOIN Odds ON Odds.MatchID = Matches.Id)
 	INNER JOIN people ON tickets.PersonId = People.id)
 
-SELECT *
+SELECT Tickets.id, name, dni, bet, paid, state, 
+        Tickets.result as ticket_result, 
+        Matches.result as match_result,
+        amount, team1, team2, Tickets.MatchId as matchId, one, x, two
 FROM (((tickets 
 	INNER JOIN matches ON tickets.MatchId = matches.id 
 	INNER JOIN people ON tickets.PersonId = People.id 

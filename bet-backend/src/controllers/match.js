@@ -1,5 +1,5 @@
-const {Op} = require('sequelize')
-const {Match,Odd} = require('../sequelize')
+const {Op,QueryTypes} = require('sequelize')
+const {Match,Odd,Till,Ticket,sequelize} = require('../sequelize')
 const asyncHandler = require("../middlewares/asyncHandler")
 
 exports.getMatches = asyncHandler(async (req, res, next) => {
@@ -14,7 +14,7 @@ exports.getMatches = asyncHandler(async (req, res, next) => {
         include: [{ model: Odd, attributes: ["one", "x", "two"] }],
     });
 
-    console.log("MATCHES GET")
+    //console.log("MATCHES GET")
 
     //console.log(matches)
     if (matches.length != 0) return res.status(200).json({ success: true, matches: matches });
@@ -23,7 +23,7 @@ exports.getMatches = asyncHandler(async (req, res, next) => {
 })
 
 exports.addMatch = asyncHandler(async (req, res, next) => {
-    console.log(req.body)
+    //console.log(req.body)
     if(req.body.team1 === "" || req.body.team2 === ""){
         res.status(200).json({ success: false, match: {}, msg: "error, one of the team or odds are empty"});
     }
@@ -78,5 +78,40 @@ exports.editMatchResult = asyncHandler(async (req, res, next) => {
 
   match.result = req.body.result
   match.save()
+
+  
+  const till = await Till.findAll({
+      attributes: [
+        "id",
+        "amount",
+      ]
+  });
+
+  const update_tickets = async () => { 
+    await sequelize.query(
+    `SELECT Tickets.id, bet, amount, one, x, two, state
+    FROM (((tickets 
+      INNER JOIN matches ON tickets.MatchId = matches.id 
+      INNER JOIN people ON tickets.PersonId = People.id 
+      INNER JOIN odds ON tickets.MatchId = odds.MatchId
+    ))) WHERE tickets.MatchId = "${match.id}"`, { type: QueryTypes.SELECT }).then(async ts => {
+      for(t of ts){
+        console.log(t.bet, match.result)
+        if(match.result === t.bet){
+          await Ticket.update({result: "W"}, { where: {id: t.id} });
+        } else {
+          await Ticket.update({result: "L",state: "L"}, { where: {id: t.id} });
+        }
+        
+      }
+    }).catch((error) => {
+      console.log('update_tickets -> error', error);
+    });
+  }
+  
+  update_tickets();
+
+
+
   res.status(200).json({ success: true, data: match });
 });
