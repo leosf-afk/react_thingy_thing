@@ -28,9 +28,7 @@ const Weather = (props) => {
   useEffect(()=>{
   
     const fetch_weather = async () => {
-      const result = await axios(
-        api_u,
-       );
+      const result = await axios(api_u);
        
       setWeatherData(result.data);
     }

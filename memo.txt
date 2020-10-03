@@ -121,3 +121,39 @@ en backlog sprint se puede cambiar las prioridades, se puede dividir tambien
 
 EL CLIENTE DICE CUANDO ESTA TERMINADO
 
+
+const baseComponent => (props){
+	switch(props.type){
+		case "ALTA":
+			return (campos vacios)
+		case "BAJA":
+			return (campos cargados, sin permitir edicion)
+		case "MODIFICACION":
+			return (campons cargados)
+	}
+}
+
+SELECT one, x, two
+        FROM (((tickets 
+        	INNER JOIN matches ON tickets.MatchId = matches.id 
+        	INNER JOIN people ON tickets.PersonId = People.id 
+        	INNER JOIN odds ON tickets.MatchId = odds.MatchId
+        ))) WHERE Tickets.id = "18c8a614-466f-4769-bfd9-2c0409cac8ef"
+
+separar vistas de implementacion
+
+<Switch>
+  <Route style={navBarSide} path="/matches">
+    <ViewMatches />
+  </Route>
+  <Route style={navBarSide} path="/tickets">
+    <ViewTickets />
+  </Route>
+  <Route path="/balance">
+    <Balance />
+  </Route>
+</Switch>
+
+
+svg,
+alternativa para css

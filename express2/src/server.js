@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const app = express();
 app.use(bodyParser.json())
 //app.use(cors)
+
 app.use("/teams", team);
 app.get('/alive', (req,res) => {
     res.send('<h1>Yes</h1>')

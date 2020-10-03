@@ -10,7 +10,7 @@ export const addMatch = ( equipos ) => async (dispatch) => {
   console.log("API post")
   console.log(equipos)
   const res = await api.post('/matches',  equipos);
-
+  
     dispatch({
         type: ADD_MATCHES,
         payload: res.data,
