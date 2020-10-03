@@ -46,7 +46,6 @@ Match.hasMany(Ticket, {as: 'tickets'})
 //opcion
 //Ticket.Match = Ticket.hasOne(Match);
 
-
 module.exports = {
     Person,
     Odd,
