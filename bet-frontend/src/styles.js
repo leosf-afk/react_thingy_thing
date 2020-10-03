@@ -42,8 +42,57 @@ export const ticketPriceStyle = {
 }
 
 export const mainComponentsStyle = {
-    width: "33.33%",
+   //width: "75%",
+//    float: "right",
     backgroundColor: "#f9d56e",
     textAlign: "center",
-    margin: "auto",
+    width: "75%",
+    float: "left",
 };
+
+
+export const navBarSide = {
+    //position: "fixed",
+    //width: "25%",
+    //float: "left",
+    //boxSizing: "border-box",
+    width: "25%",
+    float: "left",
+    backgroundColor: "#14b1ab",
+}
+
+export const navBarButton = {
+    textAlign: "center",
+    fontSize: "25px", 
+    textDecoration: 'none'
+}
+
+export const navBarButtonTextStyle = {
+    textColor: "#000000"
+}
+
+export const rootStyle = {
+    backgroundColor: "#e8505b",
+}
+
+
+export const matchStyle = {
+    border: "3px solid black",
+    width: "33%",
+    margin: "auto"
+}
+
+export const matchTeamsStyle = {
+}
+
+export const matchOddsStyle = {
+    width: "33%",
+    margin: "auto"
+}
+
+export const individualOddStyle = {
+    width: "33%",
+    float: "left",
+    textAlign: "center",
+
+}

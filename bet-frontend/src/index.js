@@ -6,13 +6,31 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import axios from "axios";
 import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useRouteMatch,
+  useHistory,
+  NavLink
+} from "react-router-dom"
+import {
   formInputStyle,
   formButtonStyle,
   formStyle,
   cardStyle,
   ticketPriceStyle,
   ticketStyle,
-  mainComponentsStyle
+  mainComponentsStyle,
+  navBarSide,
+  navBarButton,
+  navBarButtonTextStyle,
+  matchTeamsStyle,
+  matchOddsStyle,
+  individualOddStyle,
+  matchStyle,
+  rootStyle
 } from "./styles";
 
 const api = axios.create({
@@ -110,7 +128,7 @@ const changeMatchFilter = (filter) => {
 const addMatch = (data) => {
   return async dispatch => {
     const res = await api.post('/matches/add',  data);
-    //const new_match = {team1:"San Lorenzo", team2:"Independiente",Odds:{"1":1.11,"x":3.33,"2":2.22}}
+    
     dispatch({
       type: "NEW_MATCH",
       data: res.data.match
@@ -259,6 +277,8 @@ const Ticket = (props) => {
           return props.data.amount*props.data.two;
         case "x":
           return props.data.amount*props.data.x;
+        default:
+          return 0
       }
     }
 
@@ -294,7 +314,7 @@ let ViewTickets = (props) => {
 
     return (
       <div style={mainComponentsStyle}>
-            <h2>Tickets</h2>
+            <h2>Tickets</h2>  <Link to={"/tickets_add"}>ADD</Link>
             
             {props.tickets.map(t =>
               <Ticket
@@ -416,10 +436,19 @@ const Match = ({id, result, team1, team2, odds, edit_mode}) => {
     console.log(odds)
     if(!edit_mode){
       return (
-          <div>
-              {team1} - {team2} result: {result}
+          <div style={matchStyle}>
+              <div style={matchTeamsStyle}>
+                {team1} - {team2} 
+              </div>
               <br />
-                1: {odds.one} - x: {odds.x} - 2: {odds.two}
+              <div style={matchOddsStyle}>
+                <div style={individualOddStyle}>{odds.one}</div> 
+                <div style={individualOddStyle}>{odds.x}</div> 
+                <div style={individualOddStyle}>{odds.two}</div> 
+              </div>
+              <br />
+              WINNER: {result}
+              <br />
               <br />
 
           </div>
@@ -449,6 +478,7 @@ let ViewMatches = (props) => {
       return (
         
       <div style={mainComponentsStyle}>
+        <Link to={"/matches_add"}>ADD</Link>
             <button onClick={() => setEditMode(!editMode)}>edit</button>
             <h2>Matches</h2>
             {matches.map(match =>
@@ -592,6 +622,67 @@ const mapStateToBalanceProps = (state) => {
 }
 Balance = connect(mapStateToBalanceProps, null)(Balance)
 
+const Home = () => {
+  return(
+    <div></div>
+  )
+}
+
+const NavBar = () => {
+  return (
+    <div style={navBarSide}>
+        <br/>
+        <NavLink
+              exact
+              to="/"
+              style={{ textDecoration: 'none' }}>
+              <div style={navBarButton}>
+                Home
+              </div>
+          </NavLink>
+            
+        <div className="ruler"></div>
+        <br/>
+         <NavLink
+              exact
+              to="/matches"
+              style={{ textDecoration: 'none' }}>
+              <div style={navBarButton}>
+                   <span style={navBarButtonTextStyle}>Matches</span>
+              </div>
+          </NavLink>
+          <br/>
+        
+          <div className="ruler"></div>
+          
+          <NavLink
+              exact
+              to="/tickets"
+              style={{ textDecoration: 'none' }}>
+              <div style={navBarButton}>
+                Tickets
+              </div>
+          </NavLink>
+          <br/>
+        
+          <div className="ruler"></div>
+        
+          <NavLink
+              exact
+              to="/balance"
+              style={{ textDecoration: 'none' }}>
+              
+              
+              <div style={navBarButton}>
+                Balance
+              </div>
+          </NavLink>
+          <br/>
+        
+    </div>
+  )
+}
+
 const App = () => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -600,19 +691,40 @@ const App = () => {
       dispatch(getTill())
     },[dispatch]) 
 
-    return (
-        <div style={{backgroundColor: "#e8505b"}}>
-            <ViewMatches />
-            <AddMatch />
-            
-            <ViewTickets />
-            <AddTicket />
+    document.body.style = 'background-color: #e8505b;';
 
-        <br />    
-        <Balance />    
+    return (
+      
+        <div style={rootStyle}>
+          <div>
+          <Router>
+            <NavBar />
+
+            <Switch>
+              <Route path="/home" component={Home}/>
+              <Route path="/matches" component={ViewMatches}/>
+              <Route path="/tickets" component={ViewTickets}/>
+              <Route path="/matches_add"><AddMatch /></Route>
+              <Route path="/tickets_add"><AddTicket /></Route>
+              <Route path="/balance" component={Balance}/>
+            </Switch>
+          
+            
+            </Router>
+          </div>
+    
+            
         </div>
     )
 }
+//<ViewMatches />
+//<AddMatch />
+//
+//<ViewTickets />
+//<AddTicket />
+//
+//<br />    
+//<Balance />
 
 const store = createStore(
     appReducer,
