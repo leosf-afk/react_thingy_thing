@@ -28,12 +28,45 @@ const initialState = [
 
 const productReducer = (state = initialState, action) => {
   switch(action.type) {
-    case 'NEW_PRODUCT':
+    case 'NUEVO_PRODUCTO':
       return [...state, action.data]
+    case 'ELIMINAR_PRODUCTO':
+      return state
+    case 'EDITAR_PRODUCTO':
+      return state
     default: 
       return state
   }
 }
+
+const agregarProducto = (data) => {
+  return dispatch => {
+    dispatch({
+      type: "NUEVO_PRODUCTO",
+      data: data.producto
+    })
+  }
+}
+
+const editarProducto = (data) => {
+  return dispatch => {
+    dispatch({
+      type: "EDITAR_PRODUCTO",
+      data: data.producto
+    })
+  }
+}
+
+const eliminarProducto = (id_producto) => {
+  return dispatch => {
+    dispatch({
+      type: "ELIMINAR_PRODUCTO",
+      id: id_producto
+    })
+  }
+}
+
+
 
 const appReducer = combineReducers({
   productos: productReducer,
@@ -57,7 +90,7 @@ const mapStateToConsultaProps = (state) => {
 }
 Consulta = connect(mapStateToConsultaProps, null)(Consulta)
 
-const ABMComp = (props) => {
+let AltaComp = (props) => {
   return (
     <div>
       <form>
@@ -67,12 +100,53 @@ const ABMComp = (props) => {
     </div>
   )
 }
+AltaComp = connect(null, {agregarProducto})(AltaComp)
+
+let BajaComp = (props) => {
+  return (
+    <div>
+      <form>
+        Producto: <input></input>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  )
+}
+BajaComp = connect(null,{eliminarProducto})(BajaComp)
+
+let ModificarComp = (props) => {
+  return (
+    <div>
+      <form>
+        Producto: <input></input>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  )
+}
+ModificarComp = connect(null,{editarProducto})(ModificarComp)
+
+const ABMComp = (props) => {
+  switch(props.tipo_formulario){
+    case "ALTA":
+      return (<div><AltaComp /></div>)
+    case "BAJA":
+      return (<div><BajaComp /></div>)
+    case "MODIFICACION":
+      return (<div><ModificarComp /></div>)
+    default:
+      return (<div>ERROR</div>)
+    }
+  
+}
+
 
 const App = () => {
   return (
     <div>
       <Consulta />
-      <ABMComp />
+      <ABMComp tipo_formulario={"ALTA"}/>
+ 
     </div>
   )
 }
