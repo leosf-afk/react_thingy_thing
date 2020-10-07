@@ -9,12 +9,49 @@ exports.test = (req, res, next) =>
 
 exports.agregarProducto = asyncHandler(async (req, res, next) => {
     console.log(req.body)
+    const producto = await Producto.create(req.body);
 
-    res.status(200).json({ success: true, data:{} });
+    await producto.save();
+
+    res.status(200).json({ success: true, data:producto });
 })
 
 exports.eliminarProducto = asyncHandler(async (req, res, next) => {
     console.log(req.body)
 
+    const producto = await Producto.findByPk(req.body.id, {
+        attributes: [
+            "descripcion",
+            "codigo",
+            "puntos", 
+            "precio",
+            "stock",
+            "foto",
+            "estaEliminado",
+        ]
+    });
+
+    producto.estaEliminado = true
+    producto.save()
+
     res.status(200).json({ success: true, data:{} });
+})
+
+exports.getProductos = asyncHandler(async (req, res, next) => {
+    const productos = await Producto.findAll({
+        attributes: [
+            "descripcion",
+            "codigo",
+            "puntos", 
+            "precio",
+            "stock",
+            "foto",
+            "estaEliminado",
+        ]
+    });
+
+    //if (productos.length != 0) 
+    return res.status(200).json({ success: true, data: productos });
+
+    //return res.status(404).json({ success: false, msg: "Till not created" })
 })

@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 0.0
         },
-        avatar: {
+        foto: {
             type: DataTypes.STRING,
             defaultValue: "a"
         },

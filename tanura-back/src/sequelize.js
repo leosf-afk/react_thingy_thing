@@ -16,7 +16,7 @@ const sequelize = new Sequelize({
     storage: 'db.sqlite'
 });
 
-(async () => await sequelize.sync({alter:true}))();
+//(async () => await sequelize.sync({alter:true}))();
 
 const Balance = BalanceModel(sequelize,DataTypes);
 const Categoria = CategoriaModel(sequelize,DataTypes);

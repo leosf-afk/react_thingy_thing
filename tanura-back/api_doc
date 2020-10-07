@@ -1,0 +1,13 @@
+Producto:
+Endpoint: producto/agregar
+POST:
+{
+    "descripcion": string,
+    "codigo": long,
+    "puntos": long,
+    "precio": float,
+    "stock": float,
+    "foto": string (opcional) default->,
+    "estaEliminado": bool (opcional) default->
+}
+return: 

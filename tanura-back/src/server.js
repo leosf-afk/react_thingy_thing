@@ -12,7 +12,7 @@ app.get('/alive', (req,res) => {
     res.send('<h1>Yes</h1>')
 })
 
-app.use("/producto", producto);
+app.use("/productos", producto);
 
 const PORT = 3001
 app.listen(PORT, console.log(`Server started at http://localhost:${PORT}`));
