@@ -1,7 +1,15 @@
 const {Sequelize, DataTypes} = require("sequelize")
-const ProductoModel = require("./models/Producto")
+const BalanceModel = require("./models/Balance")
 const CategoriaModel = require("./models/Categoria")
+const ClienteModel = require("./models/Cliente")
+const CuotaModel = require("./models/Cuota")
+const DetallePedidoModel = require("./models/DetallePedido")
 const LineaModel = require("./models/Linea")
+const PedidoModel = require("./models/Pedido")
+const PedidoClienteModel = require("./models/PedidoCliente")
+const PedidoProveedorModel = require("./models/PedidoProveedor")
+const ProductoModel = require("./models/Producto")
+
 const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'db.sqlite'
@@ -9,10 +17,16 @@ const sequelize = new Sequelize({
 
 (async () => await sequelize.sync({alter:true}))();
 
-const Producto =  ProductoModel(sequelize,DataTypes);
+const Balance = BalanceModel(sequelize,DataTypes);
 const Categoria = CategoriaModel(sequelize,DataTypes);
-const Linea =     LineaModel(sequelize,DataTypes);
-
+const Cliente = ClienteModel(sequelize,DataTypes);
+const Cuota = CuotaModel(sequelize,DataTypes);
+const DetallePedido = DetallePedidoModel(sequelize,DataTypes);
+const Linea = LineaModel(sequelize,DataTypes);
+const Pedido = PedidoModel(sequelize,DataTypes);
+const PedidoCliente = PedidoClienteModel(sequelize,DataTypes);
+const PedidoProveedor = PedidoProveedorModel(sequelize,DataTypes);
+const Producto =  ProductoModel(sequelize,DataTypes);
 
 //odd tiene matchid y con match se puede traer odd
 //Match.Odd = Match.hasOne(Odd);
@@ -22,6 +36,15 @@ const Linea =     LineaModel(sequelize,DataTypes);
 //Match.hasMany(Ticket, {as: 'tickets'})
 
 module.exports = {
-    //Model,
+    Balance,
+    Categoria,
+    Cliente,
+    Cuota,
+    DetallePedido,
+    Linea,
+    Pedido,
+    PedidoCliente,
+    PedidoProveedor,
+    Producto,
     sequelize,
 }

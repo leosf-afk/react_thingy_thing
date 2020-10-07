@@ -20,17 +20,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        cantidad:{
+        stock:{
             type: DataTypes.DECIMAL(10,2),
             allowNull: false,
+            defaultValue: 0.0
         },
         precio:{
             type: DataTypes.DECIMAL(10,2),
             allowNull: false,
+            defaultValue: 0.0
         },
         avatar: {
             type: DataTypes.STRING,
-            defaultValue: ""
+            defaultValue: "a"
         },
         estaEliminado:{
             type: DataTypes.BOOLEAN,
