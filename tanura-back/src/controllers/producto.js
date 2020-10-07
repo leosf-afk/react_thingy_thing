@@ -21,6 +21,7 @@ exports.eliminarProducto = asyncHandler(async (req, res, next) => {
 
     const producto = await Producto.findByPk(req.body.id, {
         attributes: [
+            "id",
             "descripcion",
             "codigo",
             "puntos", 
