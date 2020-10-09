@@ -4,7 +4,7 @@ const asyncHandler = require("../middlewares/asyncHandler")
 
 exports.test = (req, res, next) => 
     Promise.resolve((async (req, res, next) => {
-        res.status(200).json({ success: true, data: "ok" });
+        res.status(200).json({ success: true, data: "Alive" });
     })(req,res,next).catch(next))
 
 exports.agregarProducto = asyncHandler(async (req, res, next) => {
@@ -39,7 +39,7 @@ exports.eliminarProducto = asyncHandler(async (req, res, next) => {
 })
 
 exports.getProductos = asyncHandler(async (req, res, next) => {
-    const productos = await Producto.findAll({
+    let productos = await Producto.findAll({
         attributes: [
             "descripcion",
             "codigo",
@@ -48,7 +48,10 @@ exports.getProductos = asyncHandler(async (req, res, next) => {
             "stock",
             "foto",
             "estaEliminado",
-        ]
+        ],
+        where: {
+            estaEliminado: false
+        }
     });
 
     //if (productos.length != 0) 

@@ -7,7 +7,32 @@ POST:
     "puntos": long,
     "precio": float,
     "stock": float,
-    "foto": string (opcional) default->,
-    "estaEliminado": bool (opcional) default->
+    "foto": string (opcional) default->"",
+    "estaEliminado": bool (opcional) default->false
 }
-return: 
+return:
+{
+    "success": true,
+    "data": [
+        {
+            "descripcion": "Producto1",
+            "codigo": 111111,
+            "puntos": 123,
+            "precio": 123.12,
+            "stock": 111,
+            "foto": "a",
+            "estaEliminado": false
+        },
+        {
+            "descripcion": "Producto2",
+            "codigo": 222222,
+            "puntos": 321,
+            "precio": 123.12,
+            "stock": 111,
+            "foto": "a",
+            "estaEliminado": false
+        }
+    ]
+}
+
+notas: solo devuelve si estaEliminado == false
