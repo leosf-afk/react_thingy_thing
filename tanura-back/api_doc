@@ -1,6 +1,7 @@
 Producto:
-Endpoint: producto/agregar
+Endpoint: /productos/agregar
 POST:
+parameters:
 {
     "descripcion": string,
     "codigo": long,
@@ -35,4 +36,40 @@ return:
     ]
 }
 
-notas: solo devuelve si estaEliminado == false
+notas: 
+-solo devuelve si estaEliminado == false
+-foto es una url con la img del producto
+
+Producto:
+Endpoint: /productos
+GET
+parameters:
+-
+return:
+{
+    "success": true,
+    "data": [
+        {
+            "descripcion": "Producto1",
+            "codigo": 111111,
+            "puntos": 123,
+            "precio": 123.12,
+            "stock": 111,
+            "foto": "a",
+            "estaEliminado": false
+        },
+        {
+            "descripcion": "Producto2",
+            "codigo": 222222,
+            "puntos": 321,
+            "precio": 123.12,
+            "stock": 111,
+            "foto": "a",
+            "estaEliminado": false
+        }
+    ]
+}
+
+notas: 
+-solo devuelve si estaEliminado == false
+-foto es una url con la img del producto
