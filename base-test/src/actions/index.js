@@ -1,3 +1,5 @@
+import api from "../services/api";
+
 export const agregarProducto = (data) => {
     return dispatch => {
       dispatch({
@@ -25,3 +27,17 @@ export const eliminarProducto = (id_producto) => {
     }
   }  
 
+  export const getAllProductos = (dispatch) => {
+    return async dispatch => {
+        const res = await api.get("/productos")
+        console.log("DATA", res.data)
+      
+        dispatch({
+        type: "GET_ALL_PRODUCTOS",
+        payload: {
+          isFetching: false,
+          data: res.data,
+        },
+      });
+    }
+  };
