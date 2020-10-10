@@ -1,5 +1,14 @@
 const {Op,QueryTypes} = require('sequelize')
-const {Pedido,Cliente,DetallePedido,PedidoCliente,PedidoProveedor,sequelize} = require('../sequelize')
+const {
+    Pedido,
+    Cliente,
+    DetallePedido,
+    PedidoCliente,
+    Producto,
+    PedidoProveedor,
+    sequelize
+} = require('../sequelize')
+
 const asyncHandler = require("../middlewares/asyncHandler")
 
 exports.agregarPedidoCliente = asyncHandler(async (req, res, next) => {
@@ -7,7 +16,8 @@ exports.agregarPedidoCliente = asyncHandler(async (req, res, next) => {
 
     const pedido = await PedidoCliente.create(req.body, {include: [
         {association: PedidoCliente.Cliente},
-        {association: PedidoCliente.Pedido, include: [ DetallePedido ]}
+        {association: PedidoCliente.Pedido, 
+            include: [ {association: DetallePedido } ]}
     ]});
 
     await pedido.save();
@@ -41,7 +51,10 @@ exports.getAllPedidoCliente = asyncHandler(async (req, res, next) => {
         include: [
             { model: Cliente, attributes: ["nombre"] },
             { model: Pedido, attributes: ["total"], 
-                include: [ { model: DetallePedido, attributes: ["cantidad", "subtotal"] }] 
+                include: [{ 
+                        model: DetallePedido, attributes: ["cantidad", "subtotal"],
+                        include: [{model: Producto, attributes: ["descripcion", "precio"]}] 
+                    }] 
             }
         ],
     });
