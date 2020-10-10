@@ -35,6 +35,7 @@ exports.agregarPedidoProveedor = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data:{} });
 })
 
+//cancelar?
 exports.eliminarPedido = asyncHandler(async (req, res, next) => {
     console.log(req.body)
 
@@ -67,15 +68,14 @@ exports.getAllPedidoCliente = asyncHandler(async (req, res, next) => {
             let total_pedido = 0
             p.Pedido.DetallePedidos.map(dp => {
                 dp.subtotal = dp.cantidad * dp.Producto.precio
-                total_pedido+=dp.subtotal
+                total_pedido += dp.subtotal
             })
 
             p.Pedido.total = total_pedido 
         }
     )
 
-    
-    //if (productos.length != 0) 
+     
     return res.status(200).json({ success: true, data: pedidos });
 
 })
