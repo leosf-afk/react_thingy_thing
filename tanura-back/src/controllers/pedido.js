@@ -16,9 +16,13 @@ exports.agregarPedidoCliente = asyncHandler(async (req, res, next) => {
 
     const pedido = await PedidoCliente.create(req.body, {include: [
         {association: PedidoCliente.Cliente},
-        {association: PedidoCliente.Pedido, 
-            include: [ {association: DetallePedido } ]}
+        {association: PedidoCliente.Pedido, include: [ 
+            {association: Pedido.DetallePedido, 
+                include: [{association: DetallePedido.Producto}]} 
+        ]}
     ]});
+
+    console.log(pedido.Pedido)
 
     await pedido.save();
 
@@ -52,13 +56,25 @@ exports.getAllPedidoCliente = asyncHandler(async (req, res, next) => {
             { model: Cliente, attributes: ["nombre"] },
             { model: Pedido, attributes: ["total"], 
                 include: [{ 
-                        model: DetallePedido, attributes: ["cantidad", "subtotal"],
-                        include: [{model: Producto, attributes: ["descripcion", "precio"]}] 
-                    }] 
+                    model: DetallePedido, attributes: ["cantidad", "subtotal"],
+                    include: [{model: Producto, attributes: ["descripcion", "precio"]}] 
+                }] 
             }
         ],
     });
 
+    pedidos.map(p => {
+            let total_pedido = 0
+            p.Pedido.DetallePedidos.map(dp => {
+                dp.subtotal = dp.cantidad * dp.Producto.precio
+                total_pedido+=dp.subtotal
+            })
+
+            p.Pedido.total = total_pedido 
+        }
+    )
+
+    
     //if (productos.length != 0) 
     return res.status(200).json({ success: true, data: pedidos });
 

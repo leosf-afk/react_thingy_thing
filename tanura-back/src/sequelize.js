@@ -30,18 +30,13 @@ const PedidoCliente = PedidoClienteModel(sequelize,DataTypes);
 const PedidoProveedor = PedidoProveedorModel(sequelize,DataTypes);
 const Producto =  ProductoModel(sequelize,DataTypes);
 
-//odd tiene matchid y con match se puede traer odd
-//Match.Odd = Match.hasOne(Odd);
-//ticket tiene personId y con person se puede traer tickets
-//Person.hasMany(Ticket)
-//ticket tiene matchId y con match se puede traer tickets
-//Match.hasMany(Ticket, {as: 'tickets'})
+//CATEGORIA LINEA
 
 //one to many
 //Categoria.hasMany(Producto)
 //Producto.belongsTo(Categoria)
 
-Pedido.hasMany(DetallePedido)
+Pedido.DetallePedido = Pedido.hasMany(DetallePedido)
 DetallePedido.belongsTo(Pedido)
 
 PedidoCliente.hasMany(Cuota)
@@ -58,7 +53,7 @@ Ciclo.hasOne(Balance)
 Balance.belongsTo(Ciclo)
 
 Producto.hasOne(DetallePedido)
-DetallePedido.belongsTo(Producto)
+DetallePedido.Producto = DetallePedido.belongsTo(Producto)
 
 Pedido.hasOne(PedidoCliente)
 PedidoCliente.Pedido = PedidoCliente.belongsTo(Pedido)
