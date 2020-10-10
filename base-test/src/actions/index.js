@@ -33,10 +33,10 @@ export const eliminarProducto = (id_producto) => {
         console.log("DATA", res.data)
       
         dispatch({
-        type: "GET_ALL_PRODUCTOS",
-        payload: {
-          isFetching: false,
-          data: res.data,
+          type: "GET_ALL_PRODUCTOS",
+          payload: {
+            isFetching: false,
+            data: res.data,
         },
       });
     }
