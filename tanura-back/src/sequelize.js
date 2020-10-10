@@ -48,7 +48,7 @@ PedidoCliente.hasMany(Cuota)
 Cuota.belongsTo(PedidoCliente)
 
 Cliente.hasMany(PedidoCliente)
-PedidoCliente.belongsTo(Cliente)
+PedidoCliente.Cliente = PedidoCliente.belongsTo(Cliente)
 
 Ciclo.hasMany(Pedido)
 Pedido.belongsTo(Ciclo)
@@ -61,7 +61,7 @@ Producto.hasOne(DetallePedido)
 DetallePedido.belongsTo(Producto)
 
 Pedido.hasOne(PedidoCliente)
-PedidoCliente.belongsTo(Pedido)
+PedidoCliente.Pedido = PedidoCliente.belongsTo(Pedido)
 
 Pedido.hasOne(PedidoProveedor)
 PedidoProveedor.belongsTo(Pedido)

@@ -1,4 +1,4 @@
-Producto:
+////////////////Producto:
 Endpoint: /productos/agregar
 POST:
 parameters:
@@ -73,3 +73,77 @@ return:
 notas: 
 -solo devuelve si estaEliminado == false
 -foto es una url con la img del producto
+
+
+////////////PEDIDOS//////////////
+Endpoint: /pedidos/cliente/agregar
+POST:
+parameters:
+{
+    "Pedido":{
+        "total": 0.0,
+	    "DetallePedidos": [
+		    {
+			    "productoId": "ae7b38b1-39a2-4a51-b70e-5cec5b2d406b",
+			    "cantidad": 1.0,
+                "subtotal": 1.0
+		    },
+		    {
+			    "productoId": "ae7b38b1-39a2-4a51-b70e-5cec5b2d406b",
+			    "cantidad": 6.0,
+                "subtotal": 1.0
+		    }
+	    ]
+    },
+	"Cliente": {
+		"nombre": "mario jrez",
+		"numeroTelefono": "3815812095"
+	} 
+}
+return
+{
+    "success": true,
+    "data": {
+        "id": "c853d9a8-0059-40b5-8274-b841cd4ff8f5",
+        "montoSaldado": 0,
+        "entregado": false,
+        "pagado": false,
+        "Pedido": {
+            "id": "c39e6376-fafd-4e53-92dc-90cae896b4c1",
+            "fecha": "2020-10-10T01:24:39.479Z",
+            "estaEliminado": false,
+            "total": 0,
+            "DetallePedidos": [
+                {
+                    "id": "cdc09094-e911-4d0a-b134-62430c3fce41",
+                    "cantidad": 1,
+                    "subtotal": 1,
+                    "PedidoId": "c39e6376-fafd-4e53-92dc-90cae896b4c1",
+                    "updatedAt": "2020-10-10T01:25:07.689Z",
+                    "createdAt": "2020-10-10T01:25:07.689Z"
+                },
+                {
+                    "id": "3631954c-a893-4936-b832-00ed9669d48c",
+                    "cantidad": 6,
+                    "subtotal": 1,
+                    "PedidoId": "c39e6376-fafd-4e53-92dc-90cae896b4c1",
+                    "updatedAt": "2020-10-10T01:25:07.689Z",
+                    "createdAt": "2020-10-10T01:25:07.689Z"
+                }
+            ],
+            "updatedAt": "2020-10-10T01:25:07.395Z",
+            "createdAt": "2020-10-10T01:25:07.395Z"
+        },
+        "Cliente": {
+            "id": "a5c2045c-81f7-4e8f-999a-da1bb4723ed3",
+            "nombre": "mario jrez",
+            "numeroTelefono": "3815812095",
+            "updatedAt": "2020-10-10T01:25:07.393Z",
+            "createdAt": "2020-10-10T01:25:07.393Z"
+        },
+        "updatedAt": "2020-10-10T01:25:07.390Z",
+        "createdAt": "2020-10-10T01:25:07.390Z",
+        "ClienteId": "a5c2045c-81f7-4e8f-999a-da1bb4723ed3",
+        "PedidoId": "c39e6376-fafd-4e53-92dc-90cae896b4c1"
+    }
+}
