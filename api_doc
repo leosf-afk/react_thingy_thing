@@ -36,7 +36,7 @@ return:
     ]
 }
 
-notas: 
+notas:
 -solo devuelve si estaEliminado == false
 -foto es una url con la img del producto
 
@@ -70,7 +70,7 @@ return:
     ]
 }
 
-notas: 
+notas:
 -solo devuelve si estaEliminado == false
 -foto es una url con la img del producto
 
@@ -94,7 +94,7 @@ parameters:
 	"Cliente": {
 		"nombre": string,
 		"numeroTelefono": string
-	} 
+	}
 }
 return
 {
@@ -138,7 +138,7 @@ Endpoint: /pedidos/cliente
 GET:
 parameters:
 -
-return 
+return
 {
     "success": true,
     "data": [
@@ -166,6 +166,8 @@ return
         }
     ]
 }
+
+endpoint 
 
 falta hacer error handling y correciones:
 
