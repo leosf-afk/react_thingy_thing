@@ -1,0 +1,191 @@
+////////////////Producto:
+Endpoint: /productos/agregar
+POST:
+parameters:
+{
+    "descripcion": string,
+    "codigo": long,
+    "puntos": long,
+    "precio": float,
+    "stock": float,
+    "foto": string (opcional) default->"",
+    "estaEliminado": bool (opcional) default->false
+}
+return:
+{
+    "success": true,
+    "data": [
+        {
+            "descripcion": "Producto1",
+            "codigo": 111111,
+            "puntos": 123,
+            "precio": 123.12,
+            "stock": 111,
+            "foto": "a",
+            "estaEliminado": false
+        },
+        {
+            "descripcion": "Producto2",
+            "codigo": 222222,
+            "puntos": 321,
+            "precio": 123.12,
+            "stock": 111,
+            "foto": "a",
+            "estaEliminado": false
+        }
+    ]
+}
+
+notas: 
+-solo devuelve si estaEliminado == false
+-foto es una url con la img del producto
+
+Producto:
+Endpoint: /productos
+GET
+parameters:
+-
+return:
+{
+    "success": true,
+    "data": [
+        {
+            "descripcion": "Producto1",
+            "codigo": 111111,
+            "puntos": 123,
+            "precio": 123.12,
+            "stock": 111,
+            "foto": "a",
+            "estaEliminado": false
+        },
+        {
+            "descripcion": "Producto2",
+            "codigo": 222222,
+            "puntos": 321,
+            "precio": 123.12,
+            "stock": 111,
+            "foto": "a",
+            "estaEliminado": false
+        }
+    ]
+}
+
+notas: 
+-solo devuelve si estaEliminado == false
+-foto es una url con la img del producto
+
+
+////////////PEDIDOS//////////////
+Endpoint: /pedidos/cliente/agregar
+POST:
+parameters:
+{
+    "Pedido":{
+        "total": float, // no tendría que ir habria que sacarlo
+	    "DetallePedidos": [
+		    {
+			    "productoId": ID de un producto existente,
+			    "cantidad": float,
+                "subtotal": float
+		    },
+            ... n canitadad de detalles
+	    ]
+    },
+	"Cliente": {
+		"nombre": string,
+		"numeroTelefono": string
+	} 
+}
+return
+{
+    "success": true,
+    "data": {
+        "id": "c853d9a8-0059-40b5-8274-b841cd4ff8f5",
+        "montoSaldado": 0,
+        "entregado": false,
+        "pagado": false,
+        "Pedido": {
+            "id": "c39e6376-fafd-4e53-92dc-90cae896b4c1",
+            "fecha": "2020-10-10T01:24:39.479Z",
+            "estaEliminado": false,
+            "total": 0,
+            "DetallePedidos": [
+                {
+                    "id": "cdc09094-e911-4d0a-b134-62430c3fce41",
+                    "cantidad": 1,
+                    "subtotal": 1,
+                    "PedidoId": "c39e6376-fafd-4e53-92dc-90cae896b4c1",
+                },
+                {
+                    "id": "3631954c-a893-4936-b832-00ed9669d48c",
+                    "cantidad": 6,
+                    "subtotal": 1,
+                    "PedidoId": "c39e6376-fafd-4e53-92dc-90cae896b4c1",
+                }
+            ]
+        },
+        "Cliente": {
+            "id": "a5c2045c-81f7-4e8f-999a-da1bb4723ed3",
+            "nombre": "mario jrez",
+            "numeroTelefono": "3815812095",
+        },
+        "ClienteId": "a5c2045c-81f7-4e8f-999a-da1bb4723ed3",
+        "PedidoId": "c39e6376-fafd-4e53-92dc-90cae896b4c1"
+    }
+}
+
+Endpoint: /pedidos/cliente
+GET:
+parameters:
+-
+return 
+{
+    "success": true,
+    "data": [
+        {
+            "id": "c853d9a8-0059-40b5-8274-b841cd4ff8f5",
+            "montoSaldado": 0,
+            "entregado": false,
+            "pagado": false,
+            "Cliente": {
+                "nombre": "mario jrez"
+            },
+            "Pedido": {
+                "total": 0,
+                "DetallePedidos": [
+                    {
+                        "cantidad": 6,
+                        "subtotal": 1
+                    },
+                    {
+                        "cantidad": 1,
+                        "subtotal": 1
+                    }
+                ]
+            }
+        }
+    ]
+}
+
+falta hacer error handling y correciones:
+
+Endpoint: /productos/eliminar PUT
+Endpoint: /productos/agregar POST
+Endpoint: /productos GET
+
+Endpoint: /pedidos/cliente GET
+Endpoint: /pedidos/cliente/agregar POST
+
+por hacer:
+Endpoint: /productos/editar PUT
+Endpoint: /pedidos/proveedor GET
+Endpoint: /pedidos/cliente/agregar POST
+Endpoint: /balance GET
+Endpoint: /ciclos GET
+Endpoint: /ciclos/agregar POST
+Endpoint: /cuotas/pagar PUT
+Endpoint: /pedidos/marcar_entregado PUT
+Endpoint: /pedidos/marcar_pagado PUT
+Endpoint: /pedidos/marcar_recibido PUT ???
+
+ver filtros en get
